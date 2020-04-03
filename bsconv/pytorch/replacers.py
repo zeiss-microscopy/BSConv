@@ -148,11 +148,11 @@ class BSConvSTransformer(ModuleTransformer):
             bias=module.bias is not None,
         ))
 
-        def _reg_loss(self):
+        def _reg_loss(self, alpha=0.1):
             W = self.weight[:, :, 0, 0]
             WWt = torch.mm(W, torch.transpose(W, 0, 1))
             I = torch.eye(WWt.shape[0], device=WWt.device)
-            return torch.norm(WWt - I, p="fro")
+            return alpha * torch.norm(WWt - I, p="fro")
         new_module[0]._reg_loss = types.MethodType(_reg_loss, new_module[0])
 
         return new_module
