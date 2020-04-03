@@ -1,0 +1,93 @@
+import math
+
+import torch.nn
+
+
+class BSConvU(torch.nn.Sequential):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros"):
+        super().__init__()
+
+        # pointwise
+        self.add_module("pw", torch.nn.Conv2d(
+                in_channels=in_channels,
+                out_channels=out_channels,
+                kernel_size=(1, 1),
+                stride=1,
+                padding=0,
+                dilation=1,
+                groups=1,
+                bias=False,
+        ))
+
+        # depthwise
+        self.add_module("dw", torch.nn.Conv2d(
+                in_channels=out_channels,
+                out_channels=out_channels,
+                kernel_size=kernel_size,
+                stride=stride,
+                padding=padding,
+                dilation=dilation,
+                groups=out_channels,
+                bias=bias,
+                padding_mode=padding_mode,
+        ))
+ 
+
+class BSConvS(torch.nn.Sequential):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros", p=0.25, with_bn_relu=True, bn_kwargs=None):
+        super().__init__()
+       
+        # check arguments
+        assert 0.0 <= p <= 0.5
+        mid_channels = max(1, math.ceil(p * in_channels))
+        if bn_kwargs is None:
+            bn_kwargs = {}
+        
+        # pointwise 1
+        self.add_module("pw1", torch.nn.Conv2d(
+            in_channels=in_channels,
+            out_channels=mid_channels,
+            kernel_size=(1, 1),
+            stride=1,
+            padding=0,
+            dilation=1,
+            groups=1,
+            bias=False,
+        ))
+
+        # pointwise 2
+        self.add_module("pw2", torch.nn.Conv2d(
+            in_channels=mid_channels,
+            out_channels=out_channels,
+            kernel_size=(1, 1),
+            stride=1,
+            padding=0,
+            dilation=1,
+            groups=1,
+            bias=False,
+        ))
+
+        # batchnorm and activation
+        if with_bn_relu:
+            self.add_module("bn", torch.nn.BatchNorm2d(num_features=out_channels, **bn_kwargs))
+            self.add_module("activ", torch.nn.ReLU(inplace=True))
+
+        # depthwise
+        self.add_module("dw", torch.nn.Conv2d(
+            in_channels=out_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=padding,
+            dilation=dilation,
+            groups=out_channels,
+            bias=bias,
+            padding_mode=padding_mode,
+        ))
+
+    def _reg_loss(self, alpha=0.1):
+        W = self[0].weight[:, :, 0, 0]
+        WWt = torch.mm(W, torch.transpose(W, 0, 1))
+        I = torch.eye(WWt.shape[0], device=WWt.device)
+        return alpha * torch.norm(WWt - I, p="fro")
+

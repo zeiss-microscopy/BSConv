@@ -4,6 +4,8 @@ import types
 
 import torch
 
+import bsconv.pytorch.modules
+
 
 ###
 #%% utils
@@ -73,89 +75,40 @@ class ModuleTransformer(abc.ABC):
         pass
 
 
-class BSConvUTransformer(ModuleTransformer):
+class Conv2dToBSConvUTransformer(ModuleTransformer):
     def apply(self, module, name, full_name):
-        new_module = torch.nn.Sequential()
-        new_module.add_module("pw", torch.nn.Conv2d(
-                in_channels=module.in_channels,
-                out_channels=module.out_channels,
-                kernel_size=(1, 1),
-                stride=1,
-                padding=0,
-                dilation=1,
-                groups=1,
-                bias=False,
-        ))
-        new_module.add_module("dw", torch.nn.Conv2d(
-                in_channels=module.out_channels,
-                out_channels=module.out_channels,
-                kernel_size=module.kernel_size,
-                stride=module.stride,
-                padding=module.padding,
-                dilation=module.dilation,
-                groups=module.out_channels,
-                bias=module.bias is not None,
-        ))
-        return new_module
-
-
-class BSConvSTransformer(ModuleTransformer):
-    def __init__(self, p, with_bn_relu, bn_kwargs):
-        self.p = p
-        assert isinstance(self.p, float)
-        assert 0.0 < self.p <= 0.5
-        
-        self.with_bn_relu = with_bn_relu
-
-        self.bn_kwargs = bn_kwargs
-        if self.bn_kwargs is None:
-            self.bn_kwargs = {}
-
-    def apply(self, module, name, full_name):
-        mid_channels = max(1, math.ceil(self.p * module.in_channels))
-        new_module = torch.nn.Sequential()
-        new_module.add_module("pw1", torch.nn.Conv2d(
+        return bsconv.pytorch.modules.BSConvU(
             in_channels=module.in_channels,
-            out_channels=mid_channels,
-            kernel_size=(1, 1),
-            stride=1,
-            padding=0,
-            dilation=1,
-            groups=1,
-            bias=False,
-        ))
-        new_module.add_module("pw2", torch.nn.Conv2d(
-            in_channels=mid_channels,
-            out_channels=module.out_channels,
-            kernel_size=(1, 1),
-            stride=1,
-            padding=0,
-            dilation=1,
-            groups=1,
-            bias=False,
-        ))
-        if self.with_bn_relu:
-            new_module.add_module("bn", torch.nn.BatchNorm2d(num_features=module.out_channels, **self.bn_kwargs))
-            new_module.add_module("activ", torch.nn.ReLU(inplace=True))
-        new_module.add_module("dw", torch.nn.Conv2d(
-            in_channels=module.out_channels,
             out_channels=module.out_channels,
             kernel_size=module.kernel_size,
             stride=module.stride,
             padding=module.padding,
             dilation=module.dilation,
-            groups=module.out_channels,
             bias=module.bias is not None,
-        ))
+            padding_mode=module.padding_mode,
+        )
 
-        def _reg_loss(self, alpha=0.1):
-            W = self.weight[:, :, 0, 0]
-            WWt = torch.mm(W, torch.transpose(W, 0, 1))
-            I = torch.eye(WWt.shape[0], device=WWt.device)
-            return alpha * torch.norm(WWt - I, p="fro")
-        new_module[0]._reg_loss = types.MethodType(_reg_loss, new_module[0])
 
-        return new_module
+class BSConvSTransformer(ModuleTransformer):
+    def __init__(self, p, with_bn_relu, bn_kwargs):
+        self.p = p
+        self.with_bn_relu = with_bn_relu
+        self.bn_kwargs = bn_kwargs
+
+    def apply(self, module, name, full_name):
+        return bsconv.pytorch.modules.BSConvS(
+            in_channels=module.in_channels,
+            out_channels=module.out_channels,
+            kernel_size=module.kernel_size,
+            stride=module.stride,
+            padding=module.padding,
+            dilation=module.dilation,
+            bias=module.bias is not None,
+            padding_mode=module.padding_mode,
+            p=self.p,
+            with_bn_relu=self.with_bn_relu,
+            bn_kwargs=self.bn_kwargs,
+        )
 
 
 class RegularizationMethodTransformer(ModuleTransformer):
@@ -219,20 +172,26 @@ class ModuleReplacer():
         (replaced_count, module) = self._apply_recursively(module=module, name_prefix="")
         if self.verbosity >= 1:
             total_replaced_count = replaced_count + root_replaced_count
-            print("{} replaced {} module{}".format(
+            print("{} replaced a total of {} module{}".format(
                 type(self).__name__,
                 total_replaced_count,
-                "" if total_replaced_count == 1 else "s"),
-            )
+                "" if total_replaced_count == 1 else "s",
+            ))
         return module
 
     def _apply_rules(self, module, name, full_name):
         for rule in self.rules:
             if rule.filter.apply(module=module, name=name, full_name=full_name):
                 # if filter matches, apply transform to module
+                old_type_name = type(module).__name__
                 module = rule.transformer.apply(module=module, name=name, full_name=full_name)
                 if self.verbosity >= 2:
-                    print("Applied rule {} to '{}'".format(rule, full_name))
+                    print("{} replaced '{}': {} => {}".format(
+                        type(self).__name__,
+                        full_name if full_name != "" else "(root)",
+                        old_type_name,
+                        type(module).__name__,
+                    ))
                 return (1, module)
 
         # signal that no rule was applied
@@ -262,7 +221,7 @@ class BSConvU_Replacer(ModuleReplacer):
         super().__init__(**kwargs)
         self.add_rule(
             Conv2dFilter(kernel_sizes=kernel_sizes),
-            BSConvUTransformer(),
+            Conv2dToBSConvUTransformer(),
         )
 
 
