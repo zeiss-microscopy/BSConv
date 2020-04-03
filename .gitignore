@@ -1,0 +1,4 @@
+# build dirs for wheel
+bsconv.egg-info/
+build/
+dist/
