@@ -189,13 +189,14 @@ class ModuleReplacementRule():
     def __repr__(self):
         return "<{}: {} => {}>".format(
             type(self).__name__,
-            self.filter,
-            self.transformer,
+            type(self.filter).__name__,
+            type(self.transformer).__name__,
         )
 
 
 class ModuleReplacer():
-    def __init__(self):
+    def __init__(self, verbosity=0):
+        self.verbosity = verbosity
         self.rules = []
 
     def add_rule(self, *args):
@@ -214,8 +215,15 @@ class ModuleReplacer():
         )
 
     def apply(self, module):
-        (_, module) = self._apply_rules(module=module, name="", full_name="")
-        module = self._apply_recursively(module=module)
+        (root_replaced_count, module) = self._apply_rules(module=module, name="", full_name="")
+        (replaced_count, module) = self._apply_recursively(module=module, name_prefix="")
+        if self.verbosity >= 1:
+            total_replaced_count = replaced_count + root_replaced_count
+            print("{} replaced {} module{}".format(
+                type(self).__name__,
+                total_replaced_count,
+                "" if total_replaced_count == 1 else "s"),
+            )
         return module
 
     def _apply_rules(self, module, name, full_name):
@@ -223,34 +231,35 @@ class ModuleReplacer():
             if rule.filter.apply(module=module, name=name, full_name=full_name):
                 # if filter matches, apply transform to module
                 module = rule.transformer.apply(module=module, name=name, full_name=full_name)
-                print("Applied rule {} to '{}'".format(rule, full_name))
-                return (True, module)
+                if self.verbosity >= 2:
+                    print("Applied rule {} to '{}'".format(rule, full_name))
+                return (1, module)
 
         # signal that no rule was applied
-        return (False, module)
+        return (0, module)
 
-    def _apply_recursively(self, module, name_prefix=""):
+    def _apply_recursively(self, module, name_prefix):
         named_children = list(module.named_children())
+        replaced_count = 0
         for (child_name, child) in named_children:
             if not isinstance(child, torch.nn.Module):
                 continue
 
+            # check in any rule applies to the child
             child_full_name = "{}{}".format(name_prefix, child_name)
-            (child_changed, new_child) = self._apply_rules(module=child, name=child_name, full_name=child_full_name)
-            if child_changed:
-                # some rule was applied -> replace child
-                setattr(module, child_name, new_child)
-            else:
-                # no rule applied, recurse into child module
-                new_child = self._apply_recursively(module=child, name_prefix="{}{}.".format(name_prefix, child_name))
-                setattr(module, child_name, new_child)
+            (child_replaced_count, new_child) = self._apply_rules(module=child, name=child_name, full_name=child_full_name)
+            if child_replaced_count == 0:
+                # if no rule applied, recurse into child module
+                (child_replaced_count, new_child) = self._apply_recursively(module=child, name_prefix="{}{}.".format(name_prefix, child_name))
+            replaced_count += child_replaced_count
+            setattr(module, child_name, new_child)
 
-        return module
+        return (replaced_count, module)
 
 
 class BSConvU_Replacer(ModuleReplacer):
-    def __init__(self, kernel_sizes=((3, 3), (5, 5))):
-        super().__init__()
+    def __init__(self, kernel_sizes=((3, 3), (5, 5)), **kwargs):
+        super().__init__(**kwargs)
         self.add_rule(
             Conv2dFilter(kernel_sizes=kernel_sizes),
             BSConvUTransformer(),
@@ -258,8 +267,8 @@ class BSConvU_Replacer(ModuleReplacer):
 
 
 class BSConvS_Replacer(ModuleReplacer):
-    def __init__(self, kernel_sizes=((3, 3), (5, 5)), p=0.25, with_bn_relu=True, bn_kwargs=None):
-        super().__init__()
+    def __init__(self, kernel_sizes=((3, 3), (5, 5)), p=0.25, with_bn_relu=True, bn_kwargs=None, **kwargs):
+        super().__init__(**kwargs)
         self.add_rule(
             Conv2dFilter(kernel_sizes=kernel_sizes),
             BSConvSTransformer(p=p, with_bn_relu=with_bn_relu, bn_kwargs=bn_kwargs),
