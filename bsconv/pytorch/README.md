@@ -82,7 +82,7 @@ That's all you need to do in your training script!
 ## Building your own model from scratch with BSConv
 
 We provide 2 pytorch modules `bsconv.pytorch.BSConvU` and `bsconv.pytorch.BSConvS` which can be used instead of `torch.nn.Conv2d` layers.
-Building your custom network:
+Building a custom AlexNet model with BSConv modules:
 
 	import torch
 	import bsconv.pytorch
