@@ -1,9 +1,9 @@
 # BSConv implementation for pytorch
 
 We provide several implementation variants for BSConv: 
-1. A replacer functionality, which substitudes each standard convolution layer in existing networks by a BSConv module. 
+1. A replacer functionality, which substitutes each standard convolution layer in existing networks by a BSConv module. 
 2. A layer module, which can be used to build custom models from scratch.
-3. A modification functionality for individual models such as MobileNets to reproduce the results reported in the paper.
+3. A modification functionality for individual models (e.g., MobileNets) to reproduce the results reported in the paper.
 
 Status: ...
 Todo: ...
@@ -60,14 +60,14 @@ For subspace BSConv (BSConv-S):
 	
 ### 3. Add regularization loss (BSConv-S only)
 	
-When calucalting the loss, the regularization can easily be added with a weighting coefficient with only one modified line of code!
+When calculating the loss, the regularization can easily be added with a weighting coefficient with only one modified line of code!
 	
 ```python
 ...
 output = model(images)
 loss = criterion(output, target)
 
-# THIS LINE MUST BE ADDED, everthing else remains unchanged
+# THIS LINE MUST BE ADDED, everything else remains unchanged
 loss += model.reg_loss(alpha=0.1)
 
 optimizer.zero_grad()
