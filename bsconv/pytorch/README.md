@@ -19,10 +19,11 @@ Concrete examples will follow soon.
 
 ### 1. Load an existing model definition
 
+Currently supported are models with `torch.nn.Conv2d` layers without any bottleneck structure.
+
 #### Using `torchvision` ([https://github.com/pytorch/vision](https://github.com/pytorch/vision))
 
-Currently supported are models with `torch.nn.Conv2d` layers without any bottleneck structure.
-For torchvision these are:
+Currently supported torchvision models are:
 * ResNet-18, ResNet-34
 * VGG-11, VGG-13, VGG-16, VGG-19 (with and without batch normalization)
 
@@ -34,13 +35,13 @@ Example (ResNet-18):
 
 #### Using `pytorchcv` ([https://github.com/osmr/imgclsmob](https://github.com/osmr/imgclsmob/tree/master/pytorch/pytorchcv))
 
-Currently supported are models with `torch.nn.Conv2d` layers without any bottleneck structure.
 
 Example (ResNet-18):
 
     import pytorchcv.model_provider
-    model = torchvision.models.resnet18()
+	model = pytorchcv.model_provider.get_model("resnet18")
 
+A full list of supported pytorchcv models will follow soon.
 	
 ### 2. Replace Conv2d
 	
@@ -86,15 +87,47 @@ Building your custom network:
 	import torch
 	import bsconv.pytorch
 	
-	model = torch.nn.Sequential()
-	
-	model.add(bsconv.pytorch.modules.bsconv_u())
-	
-	https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
+	class BSConvAlexNet(torch.nn.Module):
 
+		def __init__(self, num_classes=1000):
+			super().__init__()
+			self.features = torch.nn.Sequential(
+				bsconv.pytorch.BSConvU(3, 64, kernel_size=11, stride=4, padding=2),
+				torch.nn.ReLU(inplace=True),
+				torch.nn.MaxPool2d(kernel_size=3, stride=2),
+				bsconv.pytorch.BSConvU(64, 192, kernel_size=5, padding=2),
+				torch.nn.ReLU(inplace=True),
+				torch.nn.MaxPool2d(kernel_size=3, stride=2),
+				bsconv.pytorch.BSConvU(192, 384, kernel_size=3, padding=1),
+				torch.nn.ReLU(inplace=True),
+				bsconv.pytorch.BSConvU(384, 256, kernel_size=3, padding=1),
+				torch.nn.ReLU(inplace=True),
+				bsconv.pytorch.BSConvU(256, 256, kernel_size=3, padding=1),
+				torch.nn.ReLU(inplace=True),
+				torch.nn.MaxPool2d(kernel_size=3, stride=2),
+			)
+			self.avgpool = torch.nn.AdaptiveAvgPool2d((6, 6))
+			self.classifier = torch.nn.Sequential(
+				torch.nn.Dropout(),
+				torch.nn.Linear(256 * 6 * 6, 4096),
+				torch.nn.ReLU(inplace=True),
+				torch.nn.Dropout(),
+				torch.nn.Linear(4096, 4096),
+				torch.nn.ReLU(inplace=True),
+				torch.nn.Linear(4096, num_classes),
+			)
+
+		def forward(self, x):
+			x = self.features(x)
+			x = self.avgpool(x)
+			x = torch.flatten(x, 1)
+			x = self.classifier(x)
+			return x
+
+			
 Note that if your network uses subspace BSConv-S layers (`bsconv.pytorch.BSConvS`), you must add the regularization loss to your classification loss:
 	
-	loss = loss + ...
+	loss = criterion(output, target) + model.reg_loss(alpha=0.1)
 	
 Concrete examples will follow soon.
 	
