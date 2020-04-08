@@ -1,4 +1,5 @@
-# Blueprint Separable Convolutions (BSConv)
+Blueprint Separable Convolutions (BSConv)
+=========================================
 
 This repository provides code and trained models for the [CVPR 2020 paper](https://arxiv.org/abs/2003.13549v2):
 
@@ -7,14 +8,14 @@ This repository provides code and trained models for the [CVPR 2020 paper](https
     CVPR 2020
     arXiv:2003.13549
 
-
-## Requirements
+Requirements
+------------
 
 * Python>=3.6
 * PyTorch>=1.0.0 (support for other frameworks might be added later)
 
-
-## Installation
+Installation
+------------
 
 ### Installation via PyPI
 
@@ -30,13 +31,14 @@ pip install bsconv
 pip install bsconv-x.y.z.whl
 ```
 
+Usage
+-----
 
-## Usage
-
-[See here for usage details for PyTorch](bsconv/pytorch/README.md).
+[See here for PyTorch usage details](bsconv/pytorch/README.md).
 
 
-## Change Log
+Change Log
+----------
 
 ### 0.1.0 (2020-04-??)
 
