@@ -21,18 +21,8 @@ Requirements
 Installation
 ------------
 
-### Installation via PyPI
-
 ```bash
 pip install bsconv
-```
-
-### Installation via Wheel
-
-1. Download `bsconv-x.y.z.whl`.
-2. Install the downloaded Wheel via `pip`
-```bash
-pip install bsconv-x.y.z.whl
 ```
 
 Usage
@@ -44,8 +34,8 @@ Usage
 Change Log
 ----------
 
-### 0.1.0 (2020-04-??)
+### 0.1.0 (2020-04-08)
 
-* first version
+* first public version
 * includes modules `BSConvU` and `BSConvS` for PyTorch
 * includes replacers `BSConvU_Replacer` and `BSConvS_Replacer` for PyTorch
