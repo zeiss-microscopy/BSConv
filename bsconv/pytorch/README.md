@@ -109,42 +109,38 @@ Building a custom AlexNet model with BSConv modules:
 import torch
 import bsconv.pytorch
 
-class BSConvAlexNet(torch.nn.Module):
+class SimpleNet(torch.nn.Module):
 
-	def __init__(self, num_classes=1000):
-		super().__init__()
-		self.features = torch.nn.Sequential(
-			bsconv.pytorch.BSConvU(3, 64, kernel_size=11, stride=4, padding=2),
-			torch.nn.ReLU(inplace=True),
-			torch.nn.MaxPool2d(kernel_size=3, stride=2),
-			bsconv.pytorch.BSConvU(64, 192, kernel_size=5, padding=2),
-			torch.nn.ReLU(inplace=True),
-			torch.nn.MaxPool2d(kernel_size=3, stride=2),
-			bsconv.pytorch.BSConvU(192, 384, kernel_size=3, padding=1),
-			torch.nn.ReLU(inplace=True),
-			bsconv.pytorch.BSConvU(384, 256, kernel_size=3, padding=1),
-			torch.nn.ReLU(inplace=True),
-			bsconv.pytorch.BSConvU(256, 256, kernel_size=3, padding=1),
-			torch.nn.ReLU(inplace=True),
-			torch.nn.MaxPool2d(kernel_size=3, stride=2),
-		)
-		self.avgpool = torch.nn.AdaptiveAvgPool2d((6, 6))
-		self.classifier = torch.nn.Sequential(
-			torch.nn.Dropout(),
-			torch.nn.Linear(256 * 6 * 6, 4096),
-			torch.nn.ReLU(inplace=True),
-			torch.nn.Dropout(),
-			torch.nn.Linear(4096, 4096),
-			torch.nn.ReLU(inplace=True),
-			torch.nn.Linear(4096, num_classes),
-		)
+    def __init__(self, num_classes=1000):
+        super().__init__()
+        self.features = torch.nn.Sequential(
+            bsconv.pytorch.BSConvU(3, 32, kernel_size=3, stride=2, padding=1),
+            torch.nn.BatchNorm2d(num_features=32),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvU(32, 64, kernel_size=3, stride=2, padding=1),
+            torch.nn.BatchNorm2d(num_features=64),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvU(64, 128, kernel_size=3, stride=2, padding=1),
+            torch.nn.BatchNorm2d(num_features=128),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvU(128, 256, kernel_size=3, stride=2, padding=1),
+            torch.nn.BatchNorm2d(num_features=256),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvU(256, 512, kernel_size=3, stride=2, padding=1),
+            torch.nn.BatchNorm2d(num_features=512),
+            torch.nn.ReLU(inplace=True),
+        )
+        self.avgpool = torch.nn.AdaptiveAvgPool2d((1, 1))
+        self.classifier = torch.nn.Sequential(
+            torch.nn.Linear(512, num_classes),
+        )
 
-	def forward(self, x):
-		x = self.features(x)
-		x = self.avgpool(x)
-		x = torch.flatten(x, 1)
-		x = self.classifier(x)
-		return x
+    def forward(self, x):
+        x = self.features(x)
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        x = self.classifier(x)
+        return x
 ```
 
 Note that if your network uses subspace BSConv-S layers (`bsconv.pytorch.BSConvS`), you must add the regularization loss to your classification loss:
