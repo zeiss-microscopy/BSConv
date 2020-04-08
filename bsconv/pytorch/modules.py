@@ -91,3 +91,11 @@ class BSConvS(torch.nn.Sequential):
         I = torch.eye(WWt.shape[0], device=WWt.device)
         return alpha * torch.norm(WWt - I, p="fro")
 
+
+class BSConvS_ModelRegLossMixin():
+    def reg_loss(self):
+        loss = 0.0
+        for sub_module in self.modules():
+            if hasattr(sub_module, "_reg_loss"):
+                loss += sub_module._reg_loss()
+        return loss 

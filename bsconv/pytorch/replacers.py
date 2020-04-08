@@ -113,19 +113,7 @@ class BSConvSTransformer(ModuleTransformer):
 
 class RegularizationMethodTransformer(ModuleTransformer):
     def apply(self, module, name, full_name):
-        def reg_loss(self):
-            loss = 0.0
-            for sub_module in module.modules():
-                try:
-                    sub_loss = sub_module._reg_loss()
-                except AttributeError:
-                    continue
-                if loss is None:
-                    loss = torch.tensor(0.0, dtype=torch.float32, device=sub_loss.device)
-                else:
-                    loss += sub_loss
-            return loss
-        module.reg_loss = types.MethodType(reg_loss, module)
+        module.reg_loss = types.MethodType(bsconv.pytorch.BSConvS_ModelRegLossMixin.reg_loss, module)
         return module
 
 
