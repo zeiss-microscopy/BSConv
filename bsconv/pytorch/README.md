@@ -28,12 +28,12 @@ BSConv as general drop-in replacement
 2. Replace convolution layers by BSConv modules
 3. Add regularization loss (BSConv-S only)
 
-Concrete examples will follow soon.
-
 
 ### 1. Load an existing model definition
 
-Currently supported are models with `torch.nn.Conv2d` layers without any bottleneck structure.
+Currently supported are models based on regular convolution layers (`torch.nn.Conv2d`) without any bottleneck structures or group convolutions.
+This includes ResNets (up to ResNet-34), VGGs, and DenseNets.
+Code for larger ResNets (ResNet-50, ResNet-101, ResNet-152) will follow soon.
 
 #### Using `torchvision` ([https://github.com/pytorch/vision](https://github.com/pytorch/vision))
 
@@ -80,7 +80,8 @@ model = replacer.apply(model)
 
 ### 3. Add regularization loss (BSConv-S only)
 
-When calculating the loss, the regularization can easily be added with a weighting coefficient with only one modified line of code!
+When calculating the loss, the orthonormal regularization can easily be added with only one line of code.
+The contribution to the global loss is determined by `alpha`.
 
 ```python
 ...
@@ -148,5 +149,3 @@ Note that if your network uses subspace BSConv-S layers (`bsconv.pytorch.BSConvS
 ```python
 loss = criterion(output, target) + model.reg_loss(alpha=0.1)
 ```
-
-Concrete examples will follow soon.
