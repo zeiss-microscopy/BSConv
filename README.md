@@ -8,6 +8,8 @@ This repository provides code and trained models for the [CVPR 2020 paper](https
     CVPR 2020
     arXiv:2003.13549
 
+**Please note that the code provided here is work-in-progress. Therefore, many features are still missing or may change bewteen versions.**
+
 Requirements
 ------------
 
