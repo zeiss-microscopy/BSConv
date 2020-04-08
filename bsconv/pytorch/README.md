@@ -106,7 +106,7 @@ BSConv PyTorch Modules
 
 We provide two PyTorch modules `bsconv.pytorch.BSConvU` (unconstrained BSConv) and `bsconv.pytorch.BSConvS` (subspace BSConv) which can be used instead of `torch.nn.Conv2d` layers.
 
-### Example 1: Building a simple custom model with unconstrained BSConvU modules:
+### Example 1: Building a simple custom model with unconstrained BSConv-U modules:
 
 ```python
 import torch
@@ -146,7 +146,7 @@ class SimpleNet(torch.nn.Module):
         return x
 ```
 
-### Example 2: Building a simple custom model with subspace BSConvS modules:
+### Example 2: Building a simple custom model with subspace BSConv-S modules:
 
 To easily apply the orthonormal regularization loss to each module, the model has to be derived as usual from `torch.nn.Module` but also from the mixin class `bsconv.pytorch.BSConvS_ModelRegLossMixin`.
 
@@ -159,8 +159,8 @@ class SimpleNet(torch.nn.Module, bsconv.pytorch.BSConvS_ModelRegLossMixin):
     def __init__(self, num_classes=1000):
         super().__init__()
         self.features = torch.nn.Sequential(
-            # using a BSConvU module as the first conv layer,
-            # since compressing a 3 channel input with BSConvS would be overkill
+            # using a BSConv-U module as the first conv layer,
+            # since compressing a 3 channel input with BSConv-S would be overkill
             bsconv.pytorch.BSConvU(3, 32, kernel_size=3, stride=2, padding=1),
             torch.nn.BatchNorm2d(num_features=32),
             torch.nn.ReLU(inplace=True),
