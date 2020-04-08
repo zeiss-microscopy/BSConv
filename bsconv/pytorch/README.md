@@ -1,25 +1,28 @@
-# BSConv implementation for PyTorch
+BSConv implementation for PyTorch
+=================================
 
 We provide several implementation variants for BSConv:
 
-* *Ready-to-use model definitions*
+* (**Ready-to-use model definitions**)[#ready-to-use-model-definitions]
     * suited for models which require special considerations when transforming them to BSConv variants (e.g., MobileNets, ResNets-50 and larger, EfficientNets, etc.)
     * can be used to reproduce the results reported in the paper
-* *BSConv as general drop-in replacement*
+* (**BSConv as general drop-in replacement**)[#bsconv-as-general-drop-in-replacement]
     * replaces convolutions in existing model definitions by BSConv
     * suited for CNNs which use regular convolutions (without groups, bottlenecks, etc.), e.g. ResNets (up to ResNet-34), VGGs, DenseNets, etc.
     * for other models (e.g. MobileNets, ResNets-50 and larger, EfficientNets, etc.) use our ready-to-use model definitions (see below)
-* *BSConv PyTorch modules*
+* (**BSConv PyTorch modules**)[#bsconv-pytorch-modules]
     * these modules can be used instead of regular convolution layers
     * suited for building custom models from scratch
 
 
-## Ready-to-use model definitions
+Ready-to-use model definitions
+------------------------------
 
 Coming soon.
 
 
-## BSConv as general drop-in replacement
+BSConv as general drop-in replacement
+-------------------------------------
 
 1. Load an existing model definition
 2. Replace convolution layers by BSConv modules
@@ -96,7 +99,8 @@ optimizer.step()
 That's all you need to do in your training script!
 
 
-## BSConv PyTorch modules
+BSConv PyTorch modules
+----------------------
 
 We provide two PyTorch modules `bsconv.pytorch.BSConvU` and `bsconv.pytorch.BSConvS` which can be used instead of `torch.nn.Conv2d` layers.
 Building a custom AlexNet model with BSConv modules:
@@ -150,7 +154,3 @@ loss = criterion(output, target) + model.reg_loss(alpha=0.1)
 ```
 
 Concrete examples will follow soon.
-
-## Improving MobileNets with BSConv
-
-Coming soon.
