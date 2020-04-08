@@ -1,7 +1,7 @@
 BSConv implementation for PyTorch
 =================================
 
-We provide several implementation variants for BSConv:
+We provide several ways to obtain BSConv-models:
 
 * [**Ready-to-use model definitions**](#ready-to-use-model-definitions)
     * suited for models which require special considerations when transforming them to BSConv variants (e.g., MobileNets, ResNets-50 and larger, EfficientNets, etc.)
@@ -9,7 +9,7 @@ We provide several implementation variants for BSConv:
 * [**BSConv as general drop-in replacement**](#bsconv-as-general-drop-in-replacement)
     * replaces convolutions in existing model definitions by BSConv
     * suited for CNNs which use regular convolutions (without groups, bottlenecks, etc.), e.g. ResNets (up to ResNet-34), VGGs, DenseNets, etc.
-    * for other models (e.g. MobileNets, ResNets-50 and larger, EfficientNets, etc.) use our ready-to-use model definitions (see below)
+    * for other models (e.g. MobileNets, ResNets-50 and larger, EfficientNets, etc.) use our ready-to-use model definitions (see above)
 * [**BSConv PyTorch modules**](#bsconv-pytorch-modules)
     * these modules can be used instead of regular convolution layers
     * suited for building custom models from scratch
@@ -24,12 +24,13 @@ Coming soon.
 BSConv as general drop-in replacement
 -------------------------------------
 
+Using BSConv as a drop-in replacement requires the following steps:
 1. Load an existing model definition
 2. Replace convolution layers by BSConv modules
 3. Add regularization loss (BSConv-S only)
 
 
-### 1. Load an existing model definition
+### Step 1: Load an existing model definition
 
 Currently supported are models based on regular convolution layers (`torch.nn.Conv2d`) without any bottleneck structures or group convolutions.
 This includes ResNets (up to ResNet-34), VGGs, and DenseNets.
@@ -60,7 +61,7 @@ model = pytorchcv.model_provider.get_model("resnet18")
 
 A full list of supported pytorchcv models will follow soon.
 
-### 2. Replace convolution layers by BSConv modules
+### Step 2: Replace convolution layers by BSConv modules
 
 Replace each `torch.nn.Conv2d` by BSConv modules:
 
@@ -78,7 +79,7 @@ replacer = bsconv.pytorch.BSConvS_Replacer()
 model = replacer.apply(model)
 ```
 
-### 3. Add regularization loss (BSConv-S only)
+### Step 3: Add regularization loss (BSConv-S only)
 
 When calculating the loss, the orthonormal regularization can easily be added with only one line of code.
 The contribution to the global loss is determined by `alpha`.
