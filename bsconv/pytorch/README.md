@@ -1,18 +1,29 @@
-# BSConv implementation for pytorch
+# BSConv implementation for PyTorch
 
 We provide several implementation variants for BSConv:
-1. A replacer functionality, which substitutes each standard convolution layer in existing networks by a BSConv module.
-2. A layer module, which can be used to build custom models from scratch.
-3. A modification functionality for individual models (e.g., MobileNets) to reproduce the results reported in the paper.
 
-Status: ...
-Todo: ...
+* *Ready-to-use model definitions*
+    * suited for models which require special considerations when transforming them to BSConv variants (e.g., MobileNets, ResNets-50 and larger, EfficientNets, etc.)
+    * can be used to reproduce the results reported in the paper
+* *BSConv as general drop-in replacement*
+    * replaces convolutions in existing model definitions by BSConv
+    * suited for CNNs which use regular convolutions (without groups, bottlenecks, etc.), e.g. ResNets (up to ResNet-34), VGGs, DenseNets, etc.
+    * for other models (e.g. MobileNets, ResNets-50 and larger, EfficientNets, etc.) use our ready-to-use model definitions (see below)
+* *BSConv PyTorch modules*
+    * these modules can be used instead of regular convolution layers
+    * suited for building custom models from scratch
 
-## BSConv as drop-in replacement for ResNets, VGGs, DenseNets
 
-1. Load an existing model
-2. Replace Conv2d layers by BSConv modules
-3. Add the regularization loss (only BSConv-S)
+## Ready-to-use model definitions
+
+Coming soon.
+
+
+## BSConv as general drop-in replacement
+
+1. Load an existing model definition
+2. Replace convolution layers by BSConv modules
+3. Add regularization loss (BSConv-S only)
 
 Concrete examples will follow soon.
 
@@ -46,7 +57,7 @@ model = pytorchcv.model_provider.get_model("resnet18")
 
 A full list of supported pytorchcv models will follow soon.
 
-### 2. Replace Conv2d
+### 2. Replace convolution layers by BSConv modules
 
 Replace each `torch.nn.Conv2d` by BSConv modules:
 
@@ -85,9 +96,9 @@ optimizer.step()
 That's all you need to do in your training script!
 
 
-## Building your own model from scratch with BSConv
+## BSConv PyTorch modules
 
-We provide 2 pytorch modules `bsconv.pytorch.BSConvU` and `bsconv.pytorch.BSConvS` which can be used instead of `torch.nn.Conv2d` layers.
+We provide two PyTorch modules `bsconv.pytorch.BSConvU` and `bsconv.pytorch.BSConvS` which can be used instead of `torch.nn.Conv2d` layers.
 Building a custom AlexNet model with BSConv modules:
 
 ```python
