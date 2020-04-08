@@ -49,7 +49,7 @@ import torchvision.models
 model = torchvision.models.resnet18()
 ```
 
-#### Using `pytorchcv` ([https://github.com/osmr/imgclsmob](https://github.com/osmr/imgclsmob/tree/master/pytorch/pytorchcv))
+#### Using `pytorchcv` ([https://github.com/osmr/imgclsmob/tree/master/pytorch](https://github.com/osmr/imgclsmob/tree/master/pytorch))
 
 
 Example (ResNet-18):
