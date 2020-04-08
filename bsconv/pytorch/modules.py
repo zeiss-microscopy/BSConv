@@ -85,17 +85,17 @@ class BSConvS(torch.nn.Sequential):
             padding_mode=padding_mode,
         ))
 
-    def _reg_loss(self, alpha=0.1):
+    def _reg_loss(self):
         W = self[0].weight[:, :, 0, 0]
         WWt = torch.mm(W, torch.transpose(W, 0, 1))
         I = torch.eye(WWt.shape[0], device=WWt.device)
-        return alpha * torch.norm(WWt - I, p="fro")
+        return torch.norm(WWt - I, p="fro")
 
 
 class BSConvS_ModelRegLossMixin():
-    def reg_loss(self):
+    def reg_loss(self, alpha=0.1):
         loss = 0.0
         for sub_module in self.modules():
             if hasattr(sub_module, "_reg_loss"):
                 loss += sub_module._reg_loss()
-        return loss 
+        return alpha * loss 
