@@ -1,4 +1,4 @@
-BSConv implementation for PyTorch
+BSConv Implementation for PyTorch
 =================================
 
 We provide several ways to obtain BSConv-models:
@@ -15,13 +15,13 @@ We provide several ways to obtain BSConv-models:
     * suited for building custom models from scratch
 
 
-Ready-to-use model definitions
+Ready-to-Use Model Definitions
 ------------------------------
 
 Coming soon.
 
 
-BSConv as general drop-in replacement
+BSConv as General Drop-in Replacement
 -------------------------------------
 
 Using BSConv as a drop-in replacement requires the following steps:
@@ -82,7 +82,7 @@ model = replacer.apply(model)
 ### Step 3: Add regularization loss (BSConv-S only)
 
 When calculating the loss, the orthonormal regularization can easily be added with only one line of code.
-The contribution to the global loss is determined by `alpha`.
+The contribution to the global loss is determined by `alpha` (see paper for details).
 
 ```python
 ...
@@ -101,11 +101,12 @@ optimizer.step()
 That's all you need to do in your training script!
 
 
-BSConv PyTorch modules
+BSConv PyTorch Modules
 ----------------------
 
-We provide two PyTorch modules `bsconv.pytorch.BSConvU` and `bsconv.pytorch.BSConvS` which can be used instead of `torch.nn.Conv2d` layers.
-Building a custom AlexNet model with BSConv modules:
+We provide two PyTorch modules `bsconv.pytorch.BSConvU` (unconstrained BSConv) and `bsconv.pytorch.BSConvS` (subspace BSConv) which can be used instead of `torch.nn.Conv2d` layers.
+
+### Example 1: Building a simple custom model with unconstrained BSConvU modules:
 
 ```python
 import torch
@@ -145,8 +146,62 @@ class SimpleNet(torch.nn.Module):
         return x
 ```
 
-Note that if your network uses subspace BSConv-S layers (`bsconv.pytorch.BSConvS`), you must add the regularization loss to your classification loss:
+### Example 2: Building a simple custom model with subspace BSConvS modules:
+
+To easily apply the orthonormal regularization loss to each module, the model has to be derived as usual from `torch.nn.Module` but also from the mixin class `bsconv.pytorch.BSConvS_ModelRegLossMixin`.
 
 ```python
-loss = criterion(output, target) + model.reg_loss(alpha=0.1)
+import torch
+import bsconv.pytorch
+
+class SimpleNet(torch.nn.Module, bsconv.pytorch.BSConvS_ModelRegLossMixin):
+
+    def __init__(self, num_classes=1000):
+        super().__init__()
+        self.features = torch.nn.Sequential(
+            # using a BSConvU module as the first conv layer,
+            # since compressing a 3 channel input with BSConvS would be overkill
+            bsconv.pytorch.BSConvU(3, 32, kernel_size=3, stride=2, padding=1),
+            torch.nn.BatchNorm2d(num_features=32),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvS(32, 64, kernel_size=3, stride=2, padding=1, p=0.5),
+            torch.nn.BatchNorm2d(num_features=64),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvS(64, 128, kernel_size=3, stride=2, padding=1, p=0.25),
+            torch.nn.BatchNorm2d(num_features=128),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvS(128, 256, kernel_size=3, stride=2, padding=1, p=0.25),
+            torch.nn.BatchNorm2d(num_features=256),
+            torch.nn.ReLU(inplace=True),
+            bsconv.pytorch.BSConvS(256, 512, kernel_size=3, stride=2, padding=1, p=0.25),
+            torch.nn.BatchNorm2d(num_features=512),
+            torch.nn.ReLU(inplace=True),
+        )
+        self.avgpool = torch.nn.AdaptiveAvgPool2d((1, 1))
+        self.classifier = torch.nn.Sequential(
+            torch.nn.Linear(512, num_classes),
+        )
+
+    def forward(self, x):
+        x = self.features(x)
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        x = self.classifier(x)
+        return x
+```
+
+Finally, you must add the regularization loss to your classification loss:
+
+```python
+...
+output = model(images)
+loss = criterion(output, target)
+
+# THIS LINE MUST BE ADDED, everything else remains unchanged
+loss += model.reg_loss(alpha=0.1)
+
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+...
 ```
