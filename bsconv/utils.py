@@ -1,3 +1,14 @@
+def forceTwoTuple(x):
+    """
+    If `x` is a tuple or a list, return `x`, otherwise return `(x, x)`.
+    """
+    if isinstance(x, list):
+        x = tuple(x)
+    if not isinstance(x, tuple):
+        x = (x, x)
+    return x
+
+
 def human_readable_int(x):
     """
     Transforms the integer `x` into a string containing thousands separators.

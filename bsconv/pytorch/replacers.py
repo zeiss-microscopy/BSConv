@@ -4,20 +4,8 @@ import types
 
 import torch
 
+import bsconv.utils
 import bsconv.pytorch.modules
-
-
-###
-#%% utils
-###
-
-
-def forceTwoTuple(x):
-    if isinstance(x, list):
-        x = tuple(x)
-    if not isinstance(x, tuple):
-        x = (x, x)
-    return x
 
 
 ###
@@ -48,7 +36,7 @@ class Conv2dFilter(ModuleFilter):
     def __init__(self, kernel_sizes=None):
         self.kernel_sizes = kernel_sizes
         if self.kernel_sizes is not None:
-            self.kernel_sizes = tuple(forceTwoTuple(kernel_size) for kernel_size in self.kernel_sizes)
+            self.kernel_sizes = tuple(bsconv.utils.forceTwoTuple(kernel_size) for kernel_size in self.kernel_sizes)
 
     def apply(self, module, name, full_name):
         if not isinstance(module, torch.nn.Conv2d):
