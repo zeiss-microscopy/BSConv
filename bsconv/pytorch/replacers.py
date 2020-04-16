@@ -176,7 +176,7 @@ class ModuleReplacer():
                 old_type_name = type(module).__name__
                 module = rule.transformer.apply(module=module, name=name, full_name=full_name)
                 if self.verbosity >= 2:
-                    print("{} replaced '{}': {} => {}".format(
+                    print("{} altered '{}': {} => {}".format(
                         type(self).__name__,
                         full_name if full_name != "" else "(root)",
                         old_type_name,
