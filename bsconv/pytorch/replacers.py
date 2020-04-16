@@ -63,6 +63,10 @@ class ModuleTransformer(abc.ABC):
 
 
 class Conv2dToBSConvUTransformer(ModuleTransformer):
+    def __init__(self, with_bn, bn_kwargs):
+        self.with_bn = with_bn
+        self.bn_kwargs = bn_kwargs
+
     def apply(self, module, name, full_name):
         return bsconv.pytorch.modules.BSConvU(
             in_channels=module.in_channels,
@@ -73,6 +77,8 @@ class Conv2dToBSConvUTransformer(ModuleTransformer):
             dilation=module.dilation,
             bias=module.bias is not None,
             padding_mode=module.padding_mode,
+            with_bn=self.with_bn,
+            bn_kwargs=self.bn_kwargs,
         )
 
 
@@ -148,7 +154,7 @@ class ModuleReplacer():
             parameter_count_before = bsconv.pytorch.ModelProfiler.count_parameters(module=module)
 
         # apply replacement rules to the root module, and then recursively to all child modules
-        (root_replaced_count, module) = self._apply_rules(module=module, name="", full_name="")        
+        (root_replaced_count, module) = self._apply_rules(module=module, name="", full_name="")
         (replaced_count, module) = self._apply_recursively(module=module, name_prefix="")
 
         # print info about the replacement
@@ -206,11 +212,11 @@ class ModuleReplacer():
 
 
 class BSConvU_Replacer(ModuleReplacer):
-    def __init__(self, kernel_sizes=((3, 3), (5, 5)), **kwargs):
+    def __init__(self, kernel_sizes=((3, 3), (5, 5)), with_bn=False, bn_kwargs=None, **kwargs):
         super().__init__(**kwargs)
         self.add_rule(
             Conv2dFilter(kernel_sizes=kernel_sizes),
-            Conv2dToBSConvUTransformer(),
+            Conv2dToBSConvUTransformer(with_bn=with_bn, bn_kwargs=bn_kwargs),
         )
 
 

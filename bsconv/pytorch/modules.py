@@ -4,8 +4,12 @@ import torch.nn
 
 
 class BSConvU(torch.nn.Sequential):
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros"):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros", with_bn=False, bn_kwargs=None):
         super().__init__()
+
+        # check arguments
+        if bn_kwargs is None:
+            bn_kwargs = {}
 
         # pointwise
         self.add_module("pw", torch.nn.Conv2d(
@@ -18,6 +22,10 @@ class BSConvU(torch.nn.Sequential):
                 groups=1,
                 bias=False,
         ))
+
+        # batchnorm
+        if with_bn:
+            self.add_module("bn", torch.nn.BatchNorm2d(num_features=out_channels, **bn_kwargs))
 
         # depthwise
         self.add_module("dw", torch.nn.Conv2d(
@@ -101,4 +109,4 @@ class BSConvS_ModelRegLossMixin():
         for sub_module in self.modules():
             if hasattr(sub_module, "_reg_loss"):
                 loss += sub_module._reg_loss()
-        return alpha * loss 
+        return alpha * loss
