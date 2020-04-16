@@ -46,7 +46,7 @@ class BSConvS(torch.nn.Sequential):
         super().__init__()
 
         # check arguments
-        assert 0.0 <= p <= 0.5
+        assert 0.0 <= p <= 1.0
         mid_channels = min(in_channels, max(min_mid_channels, math.ceil(p * in_channels)))
         if bn_kwargs is None:
             bn_kwargs = {}
