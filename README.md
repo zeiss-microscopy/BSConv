@@ -10,7 +10,7 @@ This repository provides code and trained models for the [CVPR 2020 paper](https
 
 ![Demo GIF](demo.gif)
 
-**Please note that the code provided here is work-in-progress. Therefore, many features are still missing or may change bewteen versions.**
+**Please note that the code provided here is work-in-progress. Therefore, many features are still missing or may change between versions.**
 
 Requirements
 ------------
