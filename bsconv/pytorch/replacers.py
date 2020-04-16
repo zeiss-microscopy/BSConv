@@ -56,7 +56,7 @@ class Conv2dFilter(ModuleFilter):
         if (self.kernel_sizes is None) or (module.kernel_size in self.kernel_sizes):
             return True
         else:
-            return False 
+            return False
 
 
 ###
@@ -90,9 +90,9 @@ class Conv2dToBSConvUTransformer(ModuleTransformer):
 
 
 class BSConvSTransformer(ModuleTransformer):
-    def __init__(self, p, with_bn_relu, bn_kwargs):
+    def __init__(self, p, with_bn, bn_kwargs):
         self.p = p
-        self.with_bn_relu = with_bn_relu
+        self.with_bn = with_bn
         self.bn_kwargs = bn_kwargs
 
     def apply(self, module, name, full_name):
@@ -106,7 +106,7 @@ class BSConvSTransformer(ModuleTransformer):
             bias=module.bias is not None,
             padding_mode=module.padding_mode,
             p=self.p,
-            with_bn_relu=self.with_bn_relu,
+            with_bn=self.with_bn,
             bn_kwargs=self.bn_kwargs,
         )
 
@@ -148,7 +148,7 @@ class ModuleReplacer():
         else:
             raise TypeError("Rule must be specified either as instance of ModuleReplacementRule or as pair of ModuleFilter and ModuleTransformer instances")
         self.rules.append(rule)
-    
+
     def __repr__(self):
         return "<{}: {} rule(s)>".format(
             type(self).__name__,
@@ -214,11 +214,11 @@ class BSConvU_Replacer(ModuleReplacer):
 
 
 class BSConvS_Replacer(ModuleReplacer):
-    def __init__(self, kernel_sizes=((3, 3), (5, 5)), p=0.25, with_bn_relu=True, bn_kwargs=None, **kwargs):
+    def __init__(self, kernel_sizes=((3, 3), (5, 5)), p=0.25, with_bn=False, bn_kwargs=None, **kwargs):
         super().__init__(**kwargs)
         self.add_rule(
             Conv2dFilter(kernel_sizes=kernel_sizes),
-            BSConvSTransformer(p=p, with_bn_relu=with_bn_relu, bn_kwargs=bn_kwargs),
+            BSConvSTransformer(p=p, with_bn=with_bn, bn_kwargs=bn_kwargs),
         )
         self.add_rule(
             ModelFilter(),

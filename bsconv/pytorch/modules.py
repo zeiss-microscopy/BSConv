@@ -31,18 +31,18 @@ class BSConvU(torch.nn.Sequential):
                 bias=bias,
                 padding_mode=padding_mode,
         ))
- 
+
 
 class BSConvS(torch.nn.Sequential):
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros", p=0.25, with_bn_relu=True, bn_kwargs=None):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros", p=0.25, with_bn=False, bn_kwargs=None):
         super().__init__()
-       
+
         # check arguments
         assert 0.0 <= p <= 0.5
         mid_channels = max(1, math.ceil(p * in_channels))
         if bn_kwargs is None:
             bn_kwargs = {}
-        
+
         # pointwise 1
         self.add_module("pw1", torch.nn.Conv2d(
             in_channels=in_channels,
@@ -54,6 +54,10 @@ class BSConvS(torch.nn.Sequential):
             groups=1,
             bias=False,
         ))
+
+        # batchnorm
+        if with_bn:
+            self.add_module("bn1", torch.nn.BatchNorm2d(num_features=mid_channels, **bn_kwargs))
 
         # pointwise 2
         self.add_module("pw2", torch.nn.Conv2d(
@@ -67,10 +71,9 @@ class BSConvS(torch.nn.Sequential):
             bias=False,
         ))
 
-        # batchnorm and activation
-        if with_bn_relu:
-            self.add_module("bn", torch.nn.BatchNorm2d(num_features=out_channels, **bn_kwargs))
-            self.add_module("activ", torch.nn.ReLU(inplace=True))
+        # batchnorm
+        if with_bn:
+            self.add_module("bn2", torch.nn.BatchNorm2d(num_features=out_channels, **bn_kwargs))
 
         # depthwise
         self.add_module("dw", torch.nn.Conv2d(
