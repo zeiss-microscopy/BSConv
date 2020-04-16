@@ -144,15 +144,29 @@ class ModuleReplacer():
         )
 
     def apply(self, module):
-        (root_replaced_count, module) = self._apply_rules(module=module, name="", full_name="")
+        # get parameter count before the replacement
+        if self.verbosity >= 1:
+            parameter_count_before = bsconv.pytorch.ModelProfiler.count_parameters(module=module)
+
+        # apply replacement rules to the root module, and then recursively to all child modules
+        (root_replaced_count, module) = self._apply_rules(module=module, name="", full_name="")        
         (replaced_count, module) = self._apply_recursively(module=module, name_prefix="")
+
+        # print info about the replacement
         if self.verbosity >= 1:
             total_replaced_count = replaced_count + root_replaced_count
-            print("{} replaced a total of {} module{}".format(
+            print("{} altered a total of {} module{}".format(
                 type(self).__name__,
                 total_replaced_count,
                 "" if total_replaced_count == 1 else "s",
             ))
+            parameter_count_after = bsconv.pytorch.ModelProfiler.count_parameters(module=module)
+            print("Model parameters changed from {} to {} (= {:.2f}%)".format(
+                bsconv.utils.human_readable_int(parameter_count_before),
+                bsconv.utils.human_readable_int(parameter_count_after),
+                100.0 * parameter_count_after / parameter_count_before,
+            ))
+
         return module
 
     def _apply_rules(self, module, name, full_name):
