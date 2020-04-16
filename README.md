@@ -34,6 +34,15 @@ Usage
 Change Log
 ----------
 
+### 0.2.0 (2020-04-16)
+
+* BSConv for PyTorch:
+    * removed activation and added option for normalization of PW layers in BSConv-S (issue #1) (**API change**)
+    * added option for normalization of PW layers in BSConv-U (**API change**)
+    * ensure that BSConv-S never uses more mid channels (= M') than input channels (M) and add parameter `min_mid_channels` (= M'_min) (**API change**)
+    * added model profiler for parameter and FLOP counting
+    * replacer now shows number of old and new model parameters
+
 ### 0.1.0 (2020-04-08)
 
 * first public version
