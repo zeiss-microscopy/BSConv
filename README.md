@@ -22,7 +22,7 @@ Installation
 ------------
 
 ```bash
-pip install bsconv
+pip install --upgrade bsconv
 ```
 
 Usage
