@@ -42,12 +42,12 @@ class BSConvU(torch.nn.Sequential):
 
 
 class BSConvS(torch.nn.Sequential):
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros", p=0.25, with_bn=False, bn_kwargs=None):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, bias=True, padding_mode="zeros", p=0.25, min_mid_channels=4, with_bn=False, bn_kwargs=None):
         super().__init__()
 
         # check arguments
         assert 0.0 <= p <= 0.5
-        mid_channels = max(1, math.ceil(p * in_channels))
+        mid_channels = min(in_channels, max(min_mid_channels, math.ceil(p * in_channels))
         if bn_kwargs is None:
             bn_kwargs = {}
 
