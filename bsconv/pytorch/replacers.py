@@ -40,6 +40,8 @@ class Conv2dFilter(ModuleFilter):
     def apply(self, module, name, full_name):
         if not isinstance(module, torch.nn.Conv2d):
             return False
+        if module.groups != 1:
+            return False
         if (self.kernel_sizes is None) or (module.kernel_size in self.kernel_sizes):
             return True
         else:
