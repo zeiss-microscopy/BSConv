@@ -1,22 +1,21 @@
 Blueprint Separable Convolutions (BSConv)
 =========================================
 
-This repository provides code and trained models for the [CVPR 2020 paper](https://arxiv.org/abs/2003.13549v2):
+This repository provides code and trained models for the CVPR 2020 paper ([official](http://openaccess.thecvf.com/content_CVPR_2020/html/Haase_Rethinking_Depthwise_Separable_Convolutions_How_Intra-Kernel_Correlations_Lead_to_Improved_CVPR_2020_paper.html), [arXiv](https://arxiv.org/abs/2003.13549)):
 
-    Rethinking Depthwise Separable Convolutions: How Intra-Kernel Correlations Lead to Improved MobileNets
-    Daniel Haase*, Manuel Amthor*
-    CVPR 2020
-    arXiv:2003.13549
+> **Rethinking Depthwise Separable Convolutions: How Intra-Kernel Correlations Lead to Improved MobileNets**
+>
+> Daniel Haase\*, Manuel Amthor\*
 
-![Demo GIF](demo.gif)
+![Teaser GIF](teaser.gif)
 
-**Please note that the code provided here is work-in-progress. Therefore, many features are still missing or may change between versions.**
+***With CVPR 2020 approaching, ready-to-use models and training scripts for CIFAR, fine-grained datasets and ImageNet will follow very soon.***
 
 Requirements
 ------------
 
-* Python>=3.6
-* PyTorch>=1.0.0 (support for other frameworks might be added later)
+* `Python>=3.6`
+* `PyTorch>=1.0.0` (support for other frameworks will be added later)
 
 Installation
 ------------
@@ -28,8 +27,13 @@ pip install --upgrade bsconv
 Usage
 -----
 
-[See here for PyTorch usage details](bsconv/pytorch/README.md).
+![Demo GIF](demo.gif)
 
+**[See here for PyTorch usage details](bsconv/pytorch/README.md).**
+
+Support for other frameworks will be added later.
+
+Please note that the code provided here is work-in-progress. Therefore, some features may be missing or may change between versions.
 
 Change Log
 ----------
@@ -48,3 +52,16 @@ Change Log
 * first public version
 * includes modules `BSConvU` and `BSConvS` for PyTorch
 * includes replacers `BSConvU_Replacer` and `BSConvS_Replacer` for PyTorch
+
+Citation
+--------
+
+If you find this work useful in your own research, please cite the paper as:
+
+    @InProceedings{Haase_2020_CVPR,
+        author = {Haase, Daniel and Amthor, Manuel},
+        title = {Rethinking Depthwise Separable Convolutions: How Intra-Kernel Correlations Lead to Improved MobileNets},
+        booktitle = {The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+        month = {June},
+        year = {2020}
+    }
