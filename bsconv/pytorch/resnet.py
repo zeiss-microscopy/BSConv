@@ -205,8 +205,9 @@ def replace_bsconv_s(net, p=0.25):
     net = replacer.apply(net)
     return net
 
+
 ###
-#%% baseline ResNets CIFAR
+#%% ResNets CIFAR
 ###
 
 def cifar_resnet20(num_classes):
@@ -218,8 +219,22 @@ def cifar_resnet56(num_classes):
 def cifar_resnet110(num_classes):
     return build_resnet(num_classes=num_classes, units_per_stage=[18, 18, 18], cifar=True)
 
+
+def cifar_resnet20_bsconvu(num_classes):
+    net = cifar_resnet20(num_classes)
+    return replace_bsconv_u(net)
+
+def cifar_resnet56_bsconvu(num_classes):
+    net = cifar_resnet56(num_classes)
+    return replace_bsconv_u(net)
+
+def cifar_resnet110_bsconvu(num_classes):
+    net = cifar_resnet110(num_classes)
+    return replace_bsconv_u(net)
+
+
 ###
-#%% baseline ResNets ImageNet
+#%% ResNets ImageNet
 ###
 
 def resnet10(num_classes):
@@ -241,18 +256,34 @@ def resnet102(num_classes):
     return build_resnet(num_classes=num_classes, units_per_stage=[3, 8, 36, 3], cifar=False)
 
 
-def resnet18_w2(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2, 2], width_multiplier=2.0, cifar=False)
+def resnet10_bsconvu(num_classes):
+    net = resnet10(num_classes)
+    return replace_bsconv_u(net)
 
-def preresnet18(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2, 2], preact=True, cifar=False)
+def resnet18_bsconvu(num_classes):
+    net = resnet18(num_classes)
+    return replace_bsconv_u(net)
+
+def resnet26_bsconvu(num_classes):
+    net = resnet26(num_classes)
+    return replace_bsconv_u(net)
+
+def resnet34_bsconvu(num_classes):
+    net = resnet34(num_classes)
+    return replace_bsconv_u(net)
+
+def resnet68_bsconvu(num_classes):
+    net = resnet68(num_classes)
+    return replace_bsconv_u(net)
+
+def resnet102_bsconvu(num_classes):
+    net = resnet102(num_classes)
+    return replace_bsconv_u(net)
+
 
 ###
-#%% baseline WideResNets CIFAR
+#%% WideResNets CIFAR
 ###
-
-def cifar_wrn16_10(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2], preact=True, width_multiplier=10.0, cifar=True)
 
 def cifar_wrn40_3(num_classes):
     return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=3.0, cifar=True)
@@ -261,41 +292,9 @@ def cifar_wrn40_8(num_classes):
     return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=8.0, cifar=True)
 
 
-###
-#%% bsconv ResNets CIFAR
-###
-
-def cifar_resnet20_bsconvu(num_classes):
-    net = cifar_resnet20(num_classes)
+def cifar_wrn40_3_bsconvu(num_classes):
+    net = cifar_wrn40_3(num_classes)
     return replace_bsconv_u(net)
-
-def cifar_resnet56_bsconvu(num_classes):
-    net = cifar_resnet56(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_resnet110_bsconvu(num_classes):
-    net = cifar_resnet110(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_resnet20_bsconvs_p1d4(num_classes):
-    net = cifar_resnet20(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-###
-#%% bsconv ResNets ImageNet
-###
-
-def resnet18_bsconvu(num_classes):
-    net = resnet18(num_classes)
-    return replace_bsconv_u(net)
-
-def resnet18_w2_bsconvs_p1d4(num_classes):
-    net = resnet18_w2(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-###
-#%% bsconv WideResNets CIFAR
-###
 
 def cifar_wrn40_8_bsconvu(num_classes):
     net = cifar_wrn40_8(num_classes)

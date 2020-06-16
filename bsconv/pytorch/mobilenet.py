@@ -462,8 +462,10 @@ def transform_mobilenetv2(net):
     net = transformer.apply(net)
     return net
 
+
+
 ###
-#%% baseline MobileNet CIFAR
+#%% MobileNet CIFAR
 ###
 
 def cifar_mobilenetv1_w1(num_classes):
@@ -478,25 +480,6 @@ def cifar_mobilenetv3_small_w1(num_classes):
 def cifar_mobilenetv3_large_w1(num_classes):
     return build_mobilenet_v3(num_classes=num_classes, version="large", cifar=True)
 
-###
-#%% baseline MobileNet ImageNet
-###
-
-def mobilenetv1_w1(num_classes):
-    return build_mobilenet_v1(num_classes=num_classes, cifar=False)
-
-def mobilenetv2_w1(num_classes):
-    return build_mobilenet_v2(num_classes=num_classes, cifar=False)
-
-def mobilenetv3_small_w1(num_classes):
-    return build_mobilenet_v3(num_classes=num_classes, version="small", cifar=False)
-
-def mobilenetv3_large_w1(num_classes):
-    return build_mobilenet_v3(num_classes=num_classes, version="large", cifar=False)
-
-###
-#%% bsconv MobileNet CIFAR
-###
 
 def cifar_mobilenetv1_w1_bsconvu(num_classes):
     net = cifar_mobilenetv1_w1(num_classes)
@@ -516,8 +499,21 @@ def cifar_mobilenetv3_large_w1_bsconvs(num_classes):
 
 
 ###
-#%% bsconv MobileNet ImageNet
+#%% MobileNet ImageNet
 ###
+
+def mobilenetv1_w1(num_classes):
+    return build_mobilenet_v1(num_classes=num_classes, cifar=False)
+
+def mobilenetv2_w1(num_classes):
+    return build_mobilenet_v2(num_classes=num_classes, cifar=False)
+
+def mobilenetv3_small_w1(num_classes):
+    return build_mobilenet_v3(num_classes=num_classes, version="small", cifar=False)
+
+def mobilenetv3_large_w1(num_classes):
+    return build_mobilenet_v3(num_classes=num_classes, version="large", cifar=False)
+
 
 def mobilenetv1_w1_bsconvu(num_classes):
     net = mobilenetv1_w1(num_classes)
