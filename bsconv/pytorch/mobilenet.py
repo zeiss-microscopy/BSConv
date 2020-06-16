@@ -189,12 +189,14 @@ class MobileNetV3(torch.nn.Module):
                  se_units,
                  kernel_sizes,
                  activations,
+                 dropout_rate=0.0,
                  in_channels=3,
                  in_size=(224, 224),
                  use_data_batchnorm=True):
         super().__init__()
         self.use_data_batchnorm = use_data_batchnorm
         self.in_size = in_size
+        self.dropout_rate = dropout_rate
 
         self.backbone = torch.nn.Sequential()
 
@@ -220,13 +222,18 @@ class MobileNetV3(torch.nn.Module):
             self.backbone.add_module("stage{}".format(stage_id + 1), stage)
 
         self.backbone.add_module("final_conv1", conv1x1_block(in_channels=in_channels, out_channels=final_conv_channels[0], activation="hswish"))
+        in_channels = final_conv_channels[0]
         if final_conv_se:
-            self.backbone.add_module("final_se", SEUnit(channels=final_conv_channels[0], squeeze_factor=4, squeeze_activation="relu", excite_activation="hsigmoid"))
-        self.backbone.add_module("global_pool", torch.nn.AdaptiveAvgPool2d(output_size=1))
-        self.backbone.add_module("final_conv2", conv1x1_block(in_channels=final_conv_channels[0], out_channels=final_conv_channels[1], activation="hswish", use_bn=False))
+            self.backbone.add_module("final_se", SEUnit(channels=in_channels, squeeze_factor=4, squeeze_activation="relu", excite_activation="hsigmoid"))
+        self.backbone.add_module("final_pool", torch.nn.AdaptiveAvgPool2d(output_size=1))
+        if len(final_conv_channels) > 1:
+            self.backbone.add_module("final_conv2", conv1x1_block(in_channels=in_channels, out_channels=final_conv_channels[1], activation="hswish", use_bn=False))
+            in_channels = final_conv_channels[1]
+        if  self.dropout_rate != 0.0:
+            self.backbone.add_module("final_dropout", torch.nn.Dropout(dropout_rate))
 
         # classifier
-        self.classifier = Classifier(in_channels=final_conv_channels[1], num_classes=num_classes)
+        self.classifier = Classifier(in_channels=in_channels, num_classes=num_classes)
 
         self.init_params()
 
@@ -311,11 +318,13 @@ def build_mobilenet_v2(num_classes,
 def build_mobilenet_v3(num_classes,
                        version,
                        width_multiplier = 1.0,
-                       cifar = False):
+                       cifar = False,
+                       use_lightweight_head = True):
 
     in_size = (224, 224)
     init_conv_channels = 16
     init_conv_stride = 2
+    dropout_rate = 0.0
 
     if version == "small":
         channels = [[16], [24, 24], [40, 40, 40, 48, 48], [96, 96, 96]]
@@ -324,7 +333,10 @@ def build_mobilenet_v3(num_classes,
         kernel_sizes = [3, 3, 5, 5]
         activations = ["relu", "relu", "hswish", "hswish"]
         se_units = [[1], [0, 0], [1, 1, 1, 1, 1], [1, 1, 1]]
-        final_conv_channels = [576, 1024]
+        if use_lightweight_head:
+            final_conv_channels = [576]
+        else:
+            final_conv_channels = [576, 1024]
         final_conv_se = True
     elif version == "large":
         channels = [[16], [24, 24], [40, 40, 40], [80, 80, 80, 80, 112, 112], [160, 160, 160]]
@@ -333,7 +345,10 @@ def build_mobilenet_v3(num_classes,
         kernel_sizes = [3, 3, 5, 3, 5]
         activations = ["relu", "relu", "relu", "hswish", "hswish"]
         se_units = [[0], [0, 0], [1, 1, 1], [0, 0, 0, 0, 1, 1], [1, 1, 1]]
-        final_conv_channels = [960, 1280]
+        if use_lightweight_head:
+            final_conv_channels = [960]
+        else:
+            final_conv_channels = [960, 1280]
         final_conv_se = False
     else:
         raise NotImplementedError
@@ -361,6 +376,7 @@ def build_mobilenet_v3(num_classes,
                        se_units=se_units,
                        kernel_sizes=kernel_sizes,
                        activations=activations,
+                       dropout_rate=dropout_rate,
                        in_size=in_size)
 
 
