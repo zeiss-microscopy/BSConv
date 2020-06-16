@@ -59,8 +59,9 @@ Change Log
 ### 0.1.0 (2020-04-08)
 
 * first public version
-* includes modules `BSConvU` and `BSConvS` for PyTorch
-* includes replacers `BSConvU_Replacer` and `BSConvS_Replacer` for PyTorch
+* BSConv for PyTorch:
+    * modules `BSConvU` and `BSConvS`
+    * replacers `BSConvU_Replacer` and `BSConvS_Replacer`
 
 Citation
 --------
