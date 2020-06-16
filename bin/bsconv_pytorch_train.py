@@ -244,6 +244,9 @@ def main():
 if __name__ == '__main__':
     try:
         main()
+    except KeyboardInterrupt:
+        print('Stopped')
+        sys.exit(0)
     except Exception as e:
-        print("Error: {}".format(e))
+        print('Error: {}'.format(e))
         sys.exit(1)
