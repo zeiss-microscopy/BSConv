@@ -2,7 +2,7 @@ import torch.nn
 import torch.nn.init
 
 import bsconv.pytorch
-from .modules import conv1x1_block, conv3x3_block, conv7x7_block, Classifier
+from bsconv.pytorch.common import conv1x1_block, conv3x3_block, conv7x7_block, Classifier
 
 class InitUnitLarge(torch.nn.Module):
     def __init__(self,

@@ -4,7 +4,7 @@ import torch.nn
 import torch.nn.init
 
 import bsconv.pytorch
-from .modules import conv1x1_block, conv3x3_block, conv3x3_dw_block, conv5x5_dw_block, SEUnit, Classifier
+from bsconv.pytorch.common import conv1x1_block, conv3x3_block, conv3x3_dw_block, conv5x5_dw_block, SEUnit, Classifier
 
 
 class DepthwiseSeparableConvBlock(torch.nn.Module):
