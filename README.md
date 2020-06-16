@@ -13,8 +13,6 @@ This repository provides code and trained models for the CVPR 2020 paper ([offic
 
 ![Teaser GIF](teaser.gif)
 
-***With CVPR 2020 approaching, ready-to-use models and training scripts for CIFAR, fine-grained datasets and ImageNet will follow very soon.***
-
 Requirements
 ------------
 
@@ -41,6 +39,13 @@ Please note that the code provided here is work-in-progress. Therefore, some fea
 
 Change Log
 ----------
+
+### 0.3.0 (2020-06-16)
+
+* BSConv for PyTorch:
+    * added ready-to-use model definitions (MobileNetV1, MobileNetV2, MobileNetsV3, ResNets and WRNs and their BSConv variants for CIFAR and ImageNet/fine-grained datasets)
+    * added training script for CIFAR and ImageNet/fine-grained datasets
+    * added class for the StanfordDogs dataset
 
 ### 0.2.0 (2020-04-16)
 
