@@ -72,7 +72,7 @@ If you find this work useful in your own research, please cite the paper as:
 
     @InProceedings{Haase_2020_CVPR,
         author = {Haase, Daniel and Amthor, Manuel},
-        title = {Rethinking Depthwise Separable Convolutions: How Intra-Kernel Correlations Lead to Improved MobileNets},
+        title = {Rethinking Depthwise Separable Convolutions: How Intra-Kernel Correlations Lead to Improved {MobileNets}},
         booktitle = {The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
         month = {June},
         year = {2020}
