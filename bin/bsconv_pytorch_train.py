@@ -195,7 +195,8 @@ def main():
     """
     Run the complete model training.
     """
-    args = get_args()  
+    args = get_args()
+    print('Command: {}'.format(' '.join(sys.argv)))
     
     device = get_device(args)
     print('Using device {}'.format(device))
