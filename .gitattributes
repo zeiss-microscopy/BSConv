@@ -1,5 +1,6 @@
 # force Unix line endings even when working on Windows
 * text eol=lf
 
-# treat GIFs as binary files
+# treat images as binary files
 *.gif binary
+*.png binary
