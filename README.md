@@ -1,6 +1,6 @@
 ~~You can now [find us at CVPR 2020](http://cvpr20.com/event/rethinking-depthwise-separable-convolutions-how-intra-kernel-correlations-lead-to-improved-mobilenets/). Our live Q&A sessions are on [June 18, 2020 @ 5pm - 7pm PDT](https://everytimezone.com/s/2c61ec42) [(click here to join)](http://cvpr20.com/event/rethinking-depthwise-separable-convolutions-how-intra-kernel-correlations-lead-to-improved-mobilenets/) and [June 19, 2020 @ 5am - 7am PDT](https://everytimezone.com/s/99be4dea) [(click here to join)](http://cvpr20.com/event/rethinking-depthwise-separable-convolutions-how-intra-kernel-correlations-lead-to-improved-mobilenets2nd-time/). We are looking forward to seeing you at CVPR!~~
 
-***CVPR 2020 is now over, and we thank you for all the interesting discussions! We will continue the development of the code and models in this repository, so stay tuned!***
+***CVPR 2020 is now over, and we thank you for all the interesting discussions! Our presentation video is [available on YouTube](https://www.youtube.com/watch?v=nC6C-74xmbY). We will continue the development of the code and models in this repository, so stay tuned!***
 
 ---
 
