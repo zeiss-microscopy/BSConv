@@ -51,15 +51,15 @@ Results
 
 | Model                            |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:---------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv1_w1`           |              93.57 |         3.22 |      179.34 |
-| `cifar_moblienetv1_w3d4`         |              93.51 |         1.82 |      102.66 |
-| `cifar_moblienetv1_w1d2`         |              92.44 |         0.82 |       47.21 |
-| `cifar_moblienetv1_w1d4`         |              91.17 |         0.22 |       12.99 |
+| `cifar_mobilenetv1_w1`           |              93.57 |         3.22 |      179.34 |
+| `cifar_mobilenetv1_w3d4`         |              93.51 |         1.82 |      102.66 |
+| `cifar_mobilenetv1_w1d2`         |              92.44 |         0.82 |       47.21 |
+| `cifar_mobilenetv1_w1d4`         |              91.17 |         0.22 |       12.99 |
 |                                  |                    |              |             |
-| `cifar_moblienetv1_w1_bsconvu`   |              94.48 |         3.22 |      254.64 |
-| `cifar_moblienetv1_w3d4_bsconvu` |              94.38 |         1.82 |      144.98 |
-| `cifar_moblienetv1_w1d2_bsconvu` |              93.45 |         0.82 |       65.98 |
-| `cifar_moblienetv1_w1d4_bsconvu` |              92.13 |         0.22 |       17.66 |
+| `cifar_mobilenetv1_w1_bsconvu`   |              94.48 |         3.22 |      254.64 |
+| `cifar_mobilenetv1_w3d4_bsconvu` |              94.38 |         1.82 |      144.98 |
+| `cifar_mobilenetv1_w1d2_bsconvu` |              93.45 |         0.82 |       65.98 |
+| `cifar_mobilenetv1_w1d4_bsconvu` |              92.13 |         0.22 |       17.66 |
 
 ### CIFAR10 - MobileNetV2
 
@@ -68,15 +68,15 @@ Results
 
 | Model                                 |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:--------------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv2_w1`                |              93.91 |         2.24 |       92.40 |
-| `cifar_moblienetv2_w3d4`              |              93.76 |         1.36 |       55.13 |
-| `cifar_moblienetv2_w1d2`              |              92.55 |         0.70 |       27.32 |
-| `cifar_moblienetv2_w1d4`              |              89.93 |         0.25 |        8.97 |
+| `cifar_mobilenetv2_w1`                |              93.91 |         2.24 |       92.40 |
+| `cifar_mobilenetv2_w3d4`              |              93.76 |         1.36 |       55.13 |
+| `cifar_mobilenetv2_w1d2`              |              92.55 |         0.70 |       27.32 |
+| `cifar_mobilenetv2_w1d4`              |              89.93 |         0.25 |        8.97 |
 |                                       |                    |              |             |
-| `cifar_moblienetv2_w1_bsconvs_p1d6`   |              94.47 |         2.24 |       92.40 |
-| `cifar_moblienetv2_w3d4_bsconvs_p1d6` |              94.16 |         1.36 |       55.13 |
-| `cifar_moblienetv2_w1d2_bsconvs_p1d6` |              93.30 |         0.70 |       27.32 |
-| `cifar_moblienetv2_w1d4_bsconvs_p1d6` |              90.60 |         0.25 |        8.97 |
+| `cifar_mobilenetv2_w1_bsconvs_p1d6`   |              94.47 |         2.24 |       92.40 |
+| `cifar_mobilenetv2_w3d4_bsconvs_p1d6` |              94.16 |         1.36 |       55.13 |
+| `cifar_mobilenetv2_w1d2_bsconvs_p1d6` |              93.30 |         0.70 |       27.32 |
+| `cifar_mobilenetv2_w1d4_bsconvs_p1d6` |              90.60 |         0.25 |        8.97 |
 
 ### CIFAR10 - MobileNetV3-small
 
@@ -85,15 +85,15 @@ Results
 
 | Model                                        |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:---------------------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv3_small_w1`                 |              92.57 |         1.09 |       18.48 |
-| `cifar_moblienetv3_small_w3d4`               |              91.46 |         0.72 |       11.40 |
-| `cifar_moblienetv3_small_w1d2`               |              90.33 |         0.44 |        6.00 |
-| `cifar_moblienetv3_small_w7d20`              |              88.75 |         0.31 |        3.45 |
+| `cifar_mobilenetv3_small_w1`                 |              92.57 |         1.09 |       18.48 |
+| `cifar_mobilenetv3_small_w3d4`               |              91.46 |         0.72 |       11.40 |
+| `cifar_mobilenetv3_small_w1d2`               |              90.33 |         0.44 |        6.00 |
+| `cifar_mobilenetv3_small_w7d20`              |              88.75 |         0.31 |        3.45 |
 |                                              |                    |              |             |
-| `cifar_moblienetv3_small_w1_bsconvs_p1d6`    |              93.06 |         1.09 |       18.48 |
-| `cifar_moblienetv3_small_w3d4_bsconvs_p1d6`  |              92.10 |         0.72 |       11.40 |
-| `cifar_moblienetv3_small_w1d2_bsconvs_p1d6`  |              90.58 |         0.44 |        6.00 |
-| `cifar_moblienetv3_small_w7d20_bsconvs_p1d6` |              89.04 |         0.31 |        3.45 |
+| `cifar_mobilenetv3_small_w1_bsconvs_p1d6`    |              93.06 |         1.09 |       18.48 |
+| `cifar_mobilenetv3_small_w3d4_bsconvs_p1d6`  |              92.10 |         0.72 |       11.40 |
+| `cifar_mobilenetv3_small_w1d2_bsconvs_p1d6`  |              90.58 |         0.44 |        6.00 |
+| `cifar_mobilenetv3_small_w7d20_bsconvs_p1d6` |              89.04 |         0.31 |        3.45 |
 
 ### CIFAR10 - MobileNetV3-large
 
@@ -102,15 +102,15 @@ Results
 
 | Model                                        |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:---------------------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv3_large_w1`                 |              94.38 |         2.98 |       68.45 |
-| `cifar_moblienetv3_large_w3d4`               |              94.00 |         1.73 |       40.67 |
-| `cifar_moblienetv3_large_w1d2`               |              93.30 |         0.82 |       20.00 |
-| `cifar_moblienetv3_large_w7d20`              |              92.16 |         0.44 |       10.89 |
+| `cifar_mobilenetv3_large_w1`                 |              94.38 |         2.98 |       68.45 |
+| `cifar_mobilenetv3_large_w3d4`               |              94.00 |         1.73 |       40.67 |
+| `cifar_mobilenetv3_large_w1d2`               |              93.30 |         0.82 |       20.00 |
+| `cifar_mobilenetv3_large_w7d20`              |              92.16 |         0.44 |       10.89 |
 |                                              |                    |              |             |
-| `cifar_moblienetv3_large_w1_bsconvs_p1d6`    |              94.81 |         2.98 |       68.45 |
-| `cifar_moblienetv3_large_w3d4_bsconvs_p1d6`  |              94.34 |         1.73 |       40.67 |
-| `cifar_moblienetv3_large_w1d2_bsconvs_p1d6`  |              93.85 |         0.82 |       20.00 |
-| `cifar_moblienetv3_large_w7d20_bsconvs_p1d6` |              92.45 |         0.44 |       10.89 |
+| `cifar_mobilenetv3_large_w1_bsconvs_p1d6`    |              94.81 |         2.98 |       68.45 |
+| `cifar_mobilenetv3_large_w3d4_bsconvs_p1d6`  |              94.34 |         1.73 |       40.67 |
+| `cifar_mobilenetv3_large_w1d2_bsconvs_p1d6`  |              93.85 |         0.82 |       20.00 |
+| `cifar_mobilenetv3_large_w7d20_bsconvs_p1d6` |              92.45 |         0.44 |       10.89 |
 
 ### CIFAR10 - WideResNets (WRN-16)
 
@@ -215,15 +215,15 @@ Results
 
 | Model                            |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:---------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv1_w1`           |              74.58 |         3.31 |      179.43 |
-| `cifar_moblienetv1_w3d4`         |              73.48 |         1.89 |      102.72 |
-| `cifar_moblienetv1_w1d2`         |              71.61 |         0.87 |       47.25 |
-| `cifar_moblienetv1_w1d4`         |              68.23 |         0.24 |       13.01 |
+| `cifar_mobilenetv1_w1`           |              74.58 |         3.31 |      179.43 |
+| `cifar_mobilenetv1_w3d4`         |              73.48 |         1.89 |      102.72 |
+| `cifar_mobilenetv1_w1d2`         |              71.61 |         0.87 |       47.25 |
+| `cifar_mobilenetv1_w1d4`         |              68.23 |         0.24 |       13.01 |
 |                                  |                    |              |             |
-| `cifar_moblienetv1_w1_bsconvu`   |              75.80 |         3.31 |      254.73 |
-| `cifar_moblienetv1_w3d4_bsconvu` |              75.27 |         1.89 |      145.04 |
-| `cifar_moblienetv1_w1d2_bsconvu` |              73.59 |         0.87 |       66.03 |
-| `cifar_moblienetv1_w1d4_bsconvu` |              70.37 |         0.24 |       17.68 |
+| `cifar_mobilenetv1_w1_bsconvu`   |              75.80 |         3.31 |      254.73 |
+| `cifar_mobilenetv1_w3d4_bsconvu` |              75.27 |         1.89 |      145.04 |
+| `cifar_mobilenetv1_w1d2_bsconvu` |              73.59 |         0.87 |       66.03 |
+| `cifar_mobilenetv1_w1d4_bsconvu` |              70.37 |         0.24 |       17.68 |
 
 ### CIFAR100 - MobileNetV2
 
@@ -232,15 +232,15 @@ Results
 
 | Model                                 |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:--------------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv2_w1`                |              74.67 |         2.35 |       92.51 |
-| `cifar_moblienetv2_w3d4`              |              74.57 |         1.48 |       55.24 |
-| `cifar_moblienetv2_w1d2`              |              73.03 |         0.81 |       27.43 |
-| `cifar_moblienetv2_w1d4`              |              67.89 |         0.36 |        9.08 |
+| `cifar_mobilenetv2_w1`                |              74.67 |         2.35 |       92.51 |
+| `cifar_mobilenetv2_w3d4`              |              74.57 |         1.48 |       55.24 |
+| `cifar_mobilenetv2_w1d2`              |              73.03 |         0.81 |       27.43 |
+| `cifar_mobilenetv2_w1d4`              |              67.89 |         0.36 |        9.08 |
 |                                       |                    |              |             |
-| `cifar_moblienetv2_w1_bsconvs_p1d6`   |              76.91 |         2.35 |       92.51 |
-| `cifar_moblienetv2_w3d4_bsconvs_p1d6` |              75.45 |         1.48 |       55.24 |
-| `cifar_moblienetv2_w1d2_bsconvs_p1d6` |              73.43 |         0.81 |       27.43 |
-| `cifar_moblienetv2_w1d4_bsconvs_p1d6` |              69.06 |         0.36 |        9.08 |
+| `cifar_mobilenetv2_w1_bsconvs_p1d6`   |              76.91 |         2.35 |       92.51 |
+| `cifar_mobilenetv2_w3d4_bsconvs_p1d6` |              75.45 |         1.48 |       55.24 |
+| `cifar_mobilenetv2_w1d2_bsconvs_p1d6` |              73.43 |         0.81 |       27.43 |
+| `cifar_mobilenetv2_w1d4_bsconvs_p1d6` |              69.06 |         0.36 |        9.08 |
 
 ### CIFAR100 - MobileNetV3-small
 
@@ -249,15 +249,15 @@ Results
 
 | Model                                        |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:---------------------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv3_small_w1`                 |              72.93 |         1.15 |       18.54 |
-| `cifar_moblienetv3_small_w3d4`               |              70.87 |         0.77 |       11.46 |
-| `cifar_moblienetv3_small_w1d2`               |              66.83 |         0.49 |        6.05 |
-| `cifar_moblienetv3_small_w7d20`              |              63.16 |         0.37 |        3.50 |
+| `cifar_mobilenetv3_small_w1`                 |              72.93 |         1.15 |       18.54 |
+| `cifar_mobilenetv3_small_w3d4`               |              70.87 |         0.77 |       11.46 |
+| `cifar_mobilenetv3_small_w1d2`               |              66.83 |         0.49 |        6.05 |
+| `cifar_mobilenetv3_small_w7d20`              |              63.16 |         0.37 |        3.50 |
 |                                              |                    |              |             |
-| `cifar_moblienetv3_small_w1_bsconvs_p1d6`    |              73.93 |         1.15 |       18.54 |
-| `cifar_moblienetv3_small_w3d4_bsconvs_p1d6`  |              72.28 |         0.77 |       11.46 |
-| `cifar_moblienetv3_small_w1d2_bsconvs_p1d6`  |              68.92 |         0.49 |        6.05 |
-| `cifar_moblienetv3_small_w7d20_bsconvs_p1d6` |              65.90 |         0.37 |        3.50 |
+| `cifar_mobilenetv3_small_w1_bsconvs_p1d6`    |              73.93 |         1.15 |       18.54 |
+| `cifar_mobilenetv3_small_w3d4_bsconvs_p1d6`  |              72.28 |         0.77 |       11.46 |
+| `cifar_mobilenetv3_small_w1d2_bsconvs_p1d6`  |              68.92 |         0.49 |        6.05 |
+| `cifar_mobilenetv3_small_w7d20_bsconvs_p1d6` |              65.90 |         0.37 |        3.50 |
 
 ### CIFAR100 - MobileNetV3-large
 
@@ -266,15 +266,15 @@ Results
 
 | Model                                        |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
 |:---------------------------------------------|-------------------:|-------------:|------------:|
-| `cifar_moblienetv3_large_w1`                 |              75.09 |         3.07 |       68.54 |
-| `cifar_moblienetv3_large_w3d4`               |              74.42 |         1.82 |       40.75 |
-| `cifar_moblienetv3_large_w1d2`               |              71.83 |         0.91 |       20.09 |
-| `cifar_moblienetv3_large_w7d20`              |              70.34 |         0.52 |       10.98 |
+| `cifar_mobilenetv3_large_w1`                 |              75.09 |         3.07 |       68.54 |
+| `cifar_mobilenetv3_large_w3d4`               |              74.42 |         1.82 |       40.75 |
+| `cifar_mobilenetv3_large_w1d2`               |              71.83 |         0.91 |       20.09 |
+| `cifar_mobilenetv3_large_w7d20`              |              70.34 |         0.52 |       10.98 |
 |                                              |                    |              |             |
-| `cifar_moblienetv3_large_w1_bsconvs_p1d6`    |              78.11 |         3.07 |       68.54 |
-| `cifar_moblienetv3_large_w3d4_bsconvs_p1d6`  |              76.41 |         1.82 |       40.75 |
-| `cifar_moblienetv3_large_w1d2_bsconvs_p1d6`  |              75.22 |         0.91 |       20.09 |
-| `cifar_moblienetv3_large_w7d20_bsconvs_p1d6` |              72.31 |         0.52 |       10.98 |
+| `cifar_mobilenetv3_large_w1_bsconvs_p1d6`    |              78.11 |         3.07 |       68.54 |
+| `cifar_mobilenetv3_large_w3d4_bsconvs_p1d6`  |              76.41 |         1.82 |       40.75 |
+| `cifar_mobilenetv3_large_w1d2_bsconvs_p1d6`  |              75.22 |         0.91 |       20.09 |
+| `cifar_mobilenetv3_large_w7d20_bsconvs_p1d6` |              72.31 |         0.52 |       10.98 |
 
 ### CIFAR100 - ResNets
 
