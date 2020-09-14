@@ -20,9 +20,16 @@ Table of Contents
 
 1. [Overview](#blueprint-separable-convolutions-bsconv)
 2. [Results](#results)
-    1. [CIFAR100 - ResNets](#cifar100---resnets)
-    2. [CIFAR100 - WRN-28](#cifar100---wideresnets-wrn-28)
-    2. [CIFAR100 - WRN-40](#cifar100---wideresnets-wrn-40)
+    1. [CIFAR10 - MobileNetV1](#cifar10---mobilenetv1)
+    2. [CIFAR10 - MobileNetV2](#cifar10---mobilenetv2)
+    3. [CIFAR10 - MobileNetV3-small](#cifar10---mobilenetv3-small)
+    4. [CIFAR10 - MobileNetV3-large](#cifar10---mobilenetv3-large)
+    5. [CIFAR10 - WRN-16](#cifar10---wideresnets-wrn-16)
+    6. [CIFAR10 - WRN-28](#cifar10---wideresnets-wrn-28)
+    7. [CIFAR10 - WRN-40](#cifar10---wideresnets-wrn-40)
+    8. [CIFAR100 - ResNets](#cifar100---resnets)
+    9. [CIFAR100 - WRN-28](#cifar100---wideresnets-wrn-28)
+    10. [CIFAR100 - WRN-40](#cifar100---wideresnets-wrn-40)
 3. [Requirements](#requirements)
 4. [Installation](#installation)
 5. [Usage](#usage)
@@ -31,6 +38,170 @@ Table of Contents
 
 Results
 -------
+
+### CIFAR10 - MobileNetV1
+
+![CIFAR10 MobileNetV1 Params Plot](plots/cifar10-mobilenetv1-params.png)
+![CIFAR10 MobileNetV1 FLOPs Plot](plots/cifar10-mobilenetv1-flops.png)
+
+| Model                            |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
+|:---------------------------------|-------------------:|-------------:|------------:|
+| `cifar_moblienetv1_w1`           |              93.57 |         3.22 |      179.34 |
+| `cifar_moblienetv1_w3d4`         |              93.51 |         1.82 |      102.66 |
+| `cifar_moblienetv1_w1d2`         |              92.44 |         0.82 |       47.21 |
+| `cifar_moblienetv1_w1d4`         |              91.17 |         0.22 |       12.99 |
+|                                  |                    |              |             |
+| `cifar_moblienetv1_w1_bsconvu`   |              94.48 |         3.22 |      254.64 |
+| `cifar_moblienetv1_w3d4_bsconvu` |              94.38 |         1.82 |      144.98 |
+| `cifar_moblienetv1_w1d2_bsconvu` |              93.45 |         0.82 |       65.98 |
+| `cifar_moblienetv1_w1d4_bsconvu` |              92.13 |         0.22 |       17.66 |
+
+### CIFAR10 - MobileNetV2
+
+![CIFAR10 MobileNetV2 Params Plot](plots/cifar10-mobilenetv2-params.png)
+![CIFAR10 MobileNetV2 FLOPs Plot](plots/cifar10-mobilenetv2-flops.png)
+
+| Model                                 |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
+|:--------------------------------------|-------------------:|-------------:|------------:|
+| `cifar_moblienetv2_w1`                |              93.91 |         2.24 |       92.40 |
+| `cifar_moblienetv2_w3d4`              |              93.76 |         1.36 |       55.13 |
+| `cifar_moblienetv2_w1d2`              |              92.55 |         0.70 |       27.32 |
+| `cifar_moblienetv2_w1d4`              |              89.93 |         0.25 |        8.97 |
+|                                       |                    |              |             |
+| `cifar_moblienetv2_w1_bsconvs_p1d6`   |              94.47 |         2.24 |       92.40 |
+| `cifar_moblienetv2_w3d4_bsconvs_p1d6` |              94.16 |         1.36 |       55.13 |
+| `cifar_moblienetv2_w1d2_bsconvs_p1d6` |              93.30 |         0.70 |       27.32 |
+| `cifar_moblienetv2_w1d4_bsconvs_p1d6` |              90.60 |         0.25 |        8.97 |
+
+### CIFAR10 - MobileNetV3-small
+
+![CIFAR10 MobileNetV3-small Params Plot](plots/cifar10-mobilenetv3small-params.png)
+![CIFAR10 MobileNetV3-small FLOPs Plot](plots/cifar10-mobilenetv3small-flops.png)
+
+| Model                                        |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
+|:---------------------------------------------|-------------------:|-------------:|------------:|
+| `cifar_moblienetv3_small_w1`                 |              92.57 |         1.09 |       18.48 |
+| `cifar_moblienetv3_small_w3d4`               |              91.46 |         0.72 |       11.40 |
+| `cifar_moblienetv3_small_w1d2`               |              90.33 |         0.44 |        6.00 |
+| `cifar_moblienetv3_small_w7d20`              |              88.75 |         0.31 |        3.45 |
+|                                              |                    |              |             |
+| `cifar_moblienetv3_small_w1_bsconvs_p1d6`    |              93.06 |         1.09 |       18.48 |
+| `cifar_moblienetv3_small_w3d4_bsconvs_p1d6`  |              92.10 |         0.72 |       11.40 |
+| `cifar_moblienetv3_small_w1d2_bsconvs_p1d6`  |              90.58 |         0.44 |        6.00 |
+| `cifar_moblienetv3_small_w7d20_bsconvs_p1d6` |              89.04 |         0.31 |        3.45 |
+
+### CIFAR10 - MobileNetV3-large
+
+![CIFAR10 MobileNetV3-large Params Plot](plots/cifar10-mobilenetv3large-params.png)
+![CIFAR10 MobileNetV3-large FLOPs Plot](plots/cifar10-mobilenetv3large-flops.png)
+
+| Model                                        |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
+|:---------------------------------------------|-------------------:|-------------:|------------:|
+| `cifar_moblienetv3_large_w1`                 |              94.38 |         2.98 |       68.45 |
+| `cifar_moblienetv3_large_w3d4`               |              94.00 |         1.73 |       40.67 |
+| `cifar_moblienetv3_large_w1d2`               |              93.30 |         0.82 |       20.00 |
+| `cifar_moblienetv3_large_w7d20`              |              92.16 |         0.44 |       10.89 |
+|                                              |                    |              |             |
+| `cifar_moblienetv3_large_w1_bsconvs_p1d6`    |              94.81 |         2.98 |       68.45 |
+| `cifar_moblienetv3_large_w3d4_bsconvs_p1d6`  |              94.34 |         1.73 |       40.67 |
+| `cifar_moblienetv3_large_w1d2_bsconvs_p1d6`  |              93.85 |         0.82 |       20.00 |
+| `cifar_moblienetv3_large_w7d20_bsconvs_p1d6` |              92.45 |         0.44 |       10.89 |
+
+### CIFAR10 - WideResNets (WRN-16)
+
+![CIFAR10 WRN-16 Params Plot](plots/cifar10-wrn16-params.png)
+![CIFAR10 WRN-16 FLOPs Plot](plots/cifar10-wrn16-flops.png)
+
+| Model                         |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
+|:------------------------------|-------------------:|-------------:|------------:|
+| `cifar_wrn16_1`               |              91.11 |         0.18 |       27.06 |
+| `cifar_wrn16_2`               |              93.40 |         0.69 |      101.86 |
+| `cifar_wrn16_4`               |              94.29 |         2.75 |      394.06 |
+| `cifar_wrn16_6`               |              94.60 |         6.17 |      877.10 |
+| `cifar_wrn16_8`               |              95.05 |        10.96 |     1550.99 |
+| `cifar_wrn16_10`              |              95.03 |        17.12 |     2415.71 |
+| `cifar_wrn16_12`              |              95.11 |        24.64 |     3471.28 |
+|                               |                    |              |             |
+| `cifar_wrn16_1_bsconvu`       |              89.09 |         0.03 |        5.57 |
+| `cifar_wrn16_2_bsconvu`       |              91.83 |         0.10 |       18.74 |
+| `cifar_wrn16_4_bsconvu`       |              93.56 |         0.36 |       66.59 |
+| `cifar_wrn16_6_bsconvu`       |              94.13 |         0.80 |      143.80 |
+| `cifar_wrn16_8_bsconvu`       |              94.46 |         1.41 |      250.38 |
+| `cifar_wrn16_10_bsconvu`      |              94.54 |         2.19 |      386.31 |
+| `cifar_wrn16_12_bsconvu`      |              94.82 |         3.13 |      551.60 |
+|                               |                    |              |             |
+| `cifar_wrn16_1_bsconvs_p1d4`  |              87.34 |         0.02 |        4.01 |
+| `cifar_wrn16_2_bsconvs_p1d4`  |              91.56 |         0.06 |       11.85 |
+| `cifar_wrn16_4_bsconvs_p1d4`  |              93.31 |         0.21 |       38.00 |
+| `cifar_wrn16_6_bsconvs_p1d4`  |              94.48 |         0.46 |       78.84 |
+| `cifar_wrn16_8_bsconvs_p1d4`  |              94.93 |         0.80 |      134.35 |
+| `cifar_wrn16_10_bsconvs_p1d4` |              95.17 |         1.23 |      204.55 |
+| `cifar_wrn16_12_bsconvs_p1d4` |              95.28 |         1.75 |      289.42 |
+
+### CIFAR10 - WideResNets (WRN-28)
+
+![CIFAR10 WRN-28 Params Plot](plots/cifar10-wrn28-params.png)
+![CIFAR10 WRN-28 FLOPs Plot](plots/cifar10-wrn28-flops.png)
+
+| Model                         |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
+|:------------------------------|-------------------:|-------------:|------------:|
+| `cifar_wrn28_1`               |              92.36 |         0.37 |       55.72 |
+| `cifar_wrn28_2`               |              94.29 |         1.47 |      215.79 |
+| `cifar_wrn28_3`               |              94.99 |         3.29 |      479.94 |
+| `cifar_wrn28_4`               |              94.96 |         5.85 |      848.42 |
+| `cifar_wrn28_6`               |              95.35 |        13.14 |     1898.38 |
+| `cifar_wrn28_8`               |              95.73 |        23.35 |     3365.68 |
+| `cifar_wrn28_10`              |              95.72 |        36.48 |     5250.31 |
+| `cifar_wrn28_12`              |              95.54 |        52.52 |     7552.27 |
+|                               |                    |              |             |
+| `cifar_wrn28_1_bsconvu`       |              91.28 |         0.05 |       10.09 |
+| `cifar_wrn28_2_bsconvu`       |              93.39 |         0.19 |       34.08 |
+| `cifar_wrn28_3_bsconvu`       |              93.77 |         0.42 |       71.44 |
+| `cifar_wrn28_4_bsconvu`       |              94.59 |         0.73 |      122.43 |
+| `cifar_wrn28_6_bsconvu`       |              95.16 |         1.61 |      265.31 |
+| `cifar_wrn28_8_bsconvu`       |              95.21 |         2.82 |      462.71 |
+| `cifar_wrn28_10_bsconvu`      |              95.36 |         4.39 |      714.64 |
+| `cifar_wrn28_12_bsconvu`      |              95.46 |         6.29 |     1021.10 |
+|                               |                    |              |             |
+| `cifar_wrn28_1_bsconvs_p1d4`  |              90.22 |         0.04 |        7.25 |
+| `cifar_wrn28_2_bsconvs_p1d4`  |              93.13 |         0.12 |       21.47 |
+| `cifar_wrn28_3_bsconvs_p1d4`  |              94.28 |         0.24 |       42.23 |
+| `cifar_wrn28_4_bsconvs_p1d4`  |              94.81 |         0.41 |       69.82 |
+| `cifar_wrn28_6_bsconvs_p1d4`  |              95.10 |         0.88 |      145.44 |
+| `cifar_wrn28_8_bsconvs_p1d4`  |              95.44 |         1.53 |      248.32 |
+| `cifar_wrn28_10_bsconvs_p1d4` |              96.02 |         2.36 |      378.46 |
+| `cifar_wrn28_12_bsconvs_p1d4` |              96.29 |         3.37 |      535.87 |
+
+### CIFAR10 - WideResNets (WRN-40)
+
+![CIFAR10 WRN-40 Params Plot](plots/cifar10-wrn40-params.png)
+![CIFAR10 WRN-40 FLOPs Plot](plots/cifar10-wrn40-flops.png)
+
+| Model                         |   Accuracy (top-1) |   Params [M] |   FLOPs [M] |
+|:------------------------------|-------------------:|-------------:|------------:|
+| `cifar_wrn40_1`               |              93.30 |         0.56 |       84.37 |
+| `cifar_wrn40_2`               |              94.44 |         2.24 |      329.73 |
+| `cifar_wrn40_3`               |              95.03 |         5.04 |      735.78 |
+| `cifar_wrn40_4`               |              95.36 |         8.95 |     1302.78 |
+| `cifar_wrn40_6`               |              95.63 |        20.12 |     2919.66 |
+| `cifar_wrn40_8`               |              95.58 |        35.75 |     5180.37 |
+| `cifar_wrn40_10`              |              95.66 |        55.84 |     8084.90 |
+|                               |                    |              |             |
+| `cifar_wrn40_1_bsconvu`       |              92.07 |         0.08 |       14.61 |
+| `cifar_wrn40_2_bsconvu`       |              93.91 |         0.29 |       49.41 |
+| `cifar_wrn40_3_bsconvu`       |              94.65 |         0.63 |      103.88 |
+| `cifar_wrn40_4_bsconvu`       |              94.80 |         1.09 |      178.27 |
+| `cifar_wrn40_6_bsconvu`       |              95.20 |         2.41 |      386.81 |
+| `cifar_wrn40_8_bsconvu`       |              95.54 |         4.24 |      675.05 |
+| `cifar_wrn40_10_bsconvu`      |              95.83 |         6.59 |     1042.98 |
+|                               |                    |              |             |
+| `cifar_wrn40_1_bsconvs_p1d4`  |              91.24 |         0.05 |       10.49 |
+| `cifar_wrn40_2_bsconvs_p1d4`  |              93.55 |         0.17 |       31.08 |
+| `cifar_wrn40_3_bsconvs_p1d4`  |              94.64 |         0.36 |       61.38 |
+| `cifar_wrn40_4_bsconvs_p1d4`  |              94.98 |         0.61 |      101.64 |
+| `cifar_wrn40_6_bsconvs_p1d4`  |              95.66 |         1.31 |      212.04 |
+| `cifar_wrn40_8_bsconvs_p1d4`  |              95.74 |         2.27 |      362.29 |
+| `cifar_wrn40_10_bsconvs_p1d4` |              96.00 |         3.50 |      552.38 |
 
 ### CIFAR100 - ResNets
 
