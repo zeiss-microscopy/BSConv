@@ -299,7 +299,7 @@ Results
 | `cifar_resnet56_bsconvs_p1d4`  |              68.72 |         0.08 |       15.37 |
 | `cifar_resnet110_bsconvs_p1d4` |              71.15 |         0.16 |       29.93 |
 | `cifar_resnet302_bsconvs_p1d4` |              72.53 |         0.43 |       81.70 |
-| `cifar_resnet602_bsconvs_p1d4` |              72.37 |         0.85 |      162.60 |
+| `cifar_resnet602_bsconvs_p1d4` |              73.05 |         0.85 |      162.60 |
 
 ### CIFAR100 - WideResNets (WRN-16)
 
@@ -343,6 +343,7 @@ Results
 | `cifar_wrn28_2`               |              73.38 |         1.48 |      215.80 |
 | `cifar_wrn28_3`               |              75.25 |         3.31 |      479.96 |
 | `cifar_wrn28_4`               |              76.85 |         5.87 |      848.44 |
+| `cifar_wrn28_6`               |              78.18 |        13.18 |     1898.42 |
 | `cifar_wrn28_8`               |              78.07 |        23.40 |     3365.72 |
 | `cifar_wrn28_10`              |              78.58 |        36.54 |     5250.36 |
 | `cifar_wrn28_12`              |              79.04 |        52.59 |     7552.34 |
@@ -351,6 +352,7 @@ Results
 | `cifar_wrn28_2_bsconvu`       |              71.78 |         0.20 |       34.09 |
 | `cifar_wrn28_3_bsconvu`       |              73.79 |         0.44 |       71.46 |
 | `cifar_wrn28_4_bsconvu`       |              75.29 |         0.75 |      122.45 |
+| `cifar_wrn28_6_bsconvu`       |              76.67 |         1.64 |      265.34 |
 | `cifar_wrn28_8_bsconvu`       |              77.15 |         2.87 |      462.76 |
 | `cifar_wrn28_10_bsconvu`      |              78.04 |         4.44 |      714.70 |
 | `cifar_wrn28_12_bsconvu`      |              78.30 |         6.36 |     1021.17 |
@@ -359,8 +361,9 @@ Results
 | `cifar_wrn28_2_bsconvs_p1d4`  |              71.55 |         0.13 |       21.48 |
 | `cifar_wrn28_3_bsconvs_p1d4`  |              74.42 |         0.26 |       42.25 |
 | `cifar_wrn28_4_bsconvs_p1d4`  |              76.22 |         0.43 |       69.84 |
+| `cifar_wrn28_6_bsconvs_p1d4`  |              78.18 |         0.92 |      145.47 |
 | `cifar_wrn28_8_bsconvs_p1d4`  |              79.49 |         1.58 |      248.36 |
-| `cifar_wrn28_10_bsconvs_p1d4` |              79.56 |         2.42 |      378.52 |
+| `cifar_wrn28_10_bsconvs_p1d4` |              80.09 |         2.42 |      378.52 |
 | `cifar_wrn28_12_bsconvs_p1d4` |              80.26 |         3.44 |      535.94 |
 
 ### CIFAR100 - WideResNets (WRN-40)
@@ -374,6 +377,7 @@ Results
 | `cifar_wrn40_2`               |              74.13 |         2.26 |      329.74 |
 | `cifar_wrn40_3`               |              75.70 |         5.06 |      735.79 |
 | `cifar_wrn40_4`               |              77.55 |         8.97 |     1302.81 |
+| `cifar_wrn40_6`               |              77.41 |        20.15 |     2919.70 |
 | `cifar_wrn40_8`               |              78.33 |        35.79 |     5180.42 |
 | `cifar_wrn40_10`              |              78.49 |        55.90 |     8084.96 |
 |                               |                    |              |             |
@@ -381,6 +385,7 @@ Results
 | `cifar_wrn40_2_bsconvu`       |              72.41 |         0.30 |       49.42 |
 | `cifar_wrn40_3_bsconvu`       |              74.91 |         0.64 |      103.90 |
 | `cifar_wrn40_4_bsconvu`       |              76.42 |         1.12 |      178.29 |
+| `cifar_wrn40_6_bsconvu`       |              77.12 |         2.44 |      386.85 |
 | `cifar_wrn40_8_bsconvu`       |              78.01 |         4.29 |      675.09 |
 | `cifar_wrn40_10_bsconvu`      |              78.45 |         6.64 |     1043.03 |
 |                               |                    |              |             |
@@ -388,6 +393,7 @@ Results
 | `cifar_wrn40_2_bsconvs_p1d4`  |              73.19 |         0.18 |       31.09 |
 | `cifar_wrn40_3_bsconvs_p1d4`  |              75.83 |         0.37 |       61.40 |
 | `cifar_wrn40_4_bsconvs_p1d4`  |              76.97 |         0.63 |      101.66 |
+| `cifar_wrn40_6_bsconvs_p1d4`  |              78.42 |         1.34 |      212.07 |
 | `cifar_wrn40_8_bsconvs_p1d4`  |              79.51 |         2.32 |      362.33 |
 | `cifar_wrn40_10_bsconvs_p1d4` |              80.21 |         3.56 |      552.44 |
 
