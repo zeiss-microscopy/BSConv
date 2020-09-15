@@ -58,12 +58,12 @@ class StandardUnit(torch.nn.Module):
         self.conv1 = conv3x3_block(in_channels=in_channels, out_channels=out_channels, stride=stride)
         self.conv2 = conv3x3_block(in_channels=out_channels, out_channels=out_channels, stride=1, activation=None)
         if self.use_projection:
-            self.pojection = conv1x1_block(in_channels=in_channels, out_channels=out_channels, stride=stride, activation=None)
+            self.projection = conv1x1_block(in_channels=in_channels, out_channels=out_channels, stride=stride, activation=None)
         self.relu = torch.nn.ReLU(inplace=True)
 
     def forward(self, x):
         if self.use_projection:
-            residual = self.pojection(x)
+            residual = self.projection(x)
         else:
             residual = x
         x = self.conv1(x)
@@ -85,13 +85,13 @@ class PreactUnit(torch.nn.Module):
         self.conv1 = conv3x3_block(in_channels=in_channels, out_channels=out_channels, stride=stride)
         self.conv2 = conv3x3_block(in_channels=out_channels, out_channels=out_channels, use_bn=False, activation=None)
         if self.use_projection:
-            self.pojection = conv1x1_block(in_channels=in_channels, out_channels=out_channels, stride=stride, use_bn=False, activation=None)
+            self.projection = conv1x1_block(in_channels=in_channels, out_channels=out_channels, stride=stride, use_bn=False, activation=None)
 
     def forward(self, x):
         if self.use_projection:
             x = self.bn(x)
             x = self.relu(x)
-            residual = self.pojection(x)
+            residual = self.projection(x)
         else:
             residual = x
             x = self.bn(x)
