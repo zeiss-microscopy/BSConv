@@ -1,3 +1,5 @@
+import re
+
 import torch.nn
 import torch.nn.init
 
@@ -636,3 +638,68 @@ def cifar_wrn40_8_bsconvs_p1d8(num_classes):
 def cifar_wrn40_10_bsconvs_p1d8(num_classes):
     net = cifar_wrn40_10(num_classes)
     return replace_bsconv_s(net, p=0.125)
+
+
+def get_resnet(architecture, num_classes):
+    units_per_stage = {
+        "resnet10": [1, 1, 1, 1],
+        "resnet18": [2, 2, 2, 2],
+        "resnet26": [3, 3, 3, 3],
+        "resnet34": [3, 4, 6, 3],
+        "resnet68": [3, 4, 23, 3],
+        "resnet102": [3, 8, 36, 3],
+
+        "cifar_resnet20": [3, 3, 3],
+        "cifar_resnet56": [9, 9, 9],
+        "cifar_resnet110": [18, 18, 18],
+        "cifar_resnet302": [50, 50, 50],
+        "cifar_resnet602": [100, 100, 100],
+
+        "cifar_wrn16": [2, 2, 2],
+        "cifar_wrn28": [4, 4, 4],
+        "cifar_wrn40": [6, 6, 6],
+    }
+
+    # split architecture string into base part and BSConv part
+    pattern = r"^(?P<base>(pre)?resnet[0-9]+|cifar_(pre)?resnet[0-9]+|cifar_wrn[0-9]+_[0-9]+)(_(?P<bsconv_variant>bsconvu|bsconvs_p[0-9]+d[0-9]+))?$"
+    match = re.match(pattern, architecture)
+    if match is None:
+        raise ValueError("Model architecture '{}' is not supported".format(architecture))
+    base = match.group("base")
+    bsconv_variant = match.group("bsconv_variant")
+
+    # determine the width_multiplier and the key for the units_per_stage lookup table
+    if base.startswith("cifar_wrn"):
+        split = base.split("_")
+        key = "_".join(split[:2])
+        width_multiplier = float(split[2])
+    else:
+        key = base.replace("preresnet", "resnet")
+        width_multiplier = 1.0
+
+    # check if model configuration is defined in the lookup table
+    if key not in units_per_stage:
+        raise ValueError("Model architecture '{}' is not supported".format(architecture))
+
+    # build model
+    model = build_resnet(
+        num_classes=num_classes,
+        units_per_stage=units_per_stage[key],
+        width_multiplier=width_multiplier,
+        preact=("preresnet" in base) or ("wrn" in base),
+        cifar=base.startswith("cifar_"),
+    )
+
+    # apply BSConv
+    if bsconv_variant is None:
+        pass
+    elif bsconv_variant == "bsconvu":
+        replacer = bsconv.pytorch.BSConvU_Replacer(with_bn=False)
+        model = replacer.apply(model)
+    elif bsconv_variant.startswith("bsconvs_"):
+        p_frac = [float(value) for value in bsconv_variant.split("_")[1][1:].split("d")]
+        p = p_frac[0] / p_frac[1]
+        replacer = bsconv.pytorch.BSConvS_Replacer(p=p, with_bn=True)
+        model = replacer.apply(model)
+
+    return model
