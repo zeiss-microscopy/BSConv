@@ -1,3 +1,4 @@
+import re
 import types
 
 import torch.nn
@@ -253,6 +254,12 @@ class MobileNetV3(torch.nn.Module):
         x = self.classifier(x)
         return x
 
+
+###
+#%% model definitions
+###
+
+
 def build_mobilenet_v1(num_classes,
                        width_multiplier = 1.0,
                        cifar = False):
@@ -380,10 +387,6 @@ def build_mobilenet_v3(num_classes,
                        in_size=in_size)
 
 
-###
-#%% bsconv replacer
-###
-
 def transform_mobilenetv1(net):
 
     class DSCFilter(bsconv.pytorch.replacers.ModuleFilter):
@@ -462,6 +465,50 @@ def transform_mobilenetv2(net):
     net = transformer.apply(net)
     return net
 
+
+def get_mobilenet(architecture, num_classes):
+    # parse architecture string
+    pattern = r"^(?P<cifar>cifar_)?mobilenet(?P<version>v1|v2|v3_small|v3_large)_w(?P<width_numerator>[0-9]+)(d(?P<width_denominator>[0-9]+))?(_(?P<bsconv_variant>bsconvu|bsconvs_p1d6))?$"
+    match = re.match(pattern, architecture)
+    if match is None:
+        raise ValueError("Model architecture '{}' is not supported".format(architecture))
+    cifar = (match.group("cifar") is not None)
+    version = match.group("version")
+    width_numerator = match.group("width_numerator")
+    width_denominator = match.group("width_denominator")
+    bsconv_variant = match.group("bsconv_variant")
+    
+    # determine the width_multiplier
+    if width_denominator is None:
+        width_multiplier = float(width_numerator)
+    else:
+        width_multiplier = float(width_numerator) / float(width_denominator)
+    
+    # base net
+    if version == "v1":
+        model = build_mobilenet_v1(num_classes=num_classes, width_multiplier=width_multiplier, cifar=cifar)
+    elif version == "v2":
+        model = build_mobilenet_v2(num_classes=num_classes, width_multiplier=width_multiplier, cifar=cifar)
+    elif version == "v3_small":
+        model = build_mobilenet_v3(num_classes=num_classes, version="small", width_multiplier=width_multiplier, cifar=cifar)
+    elif version == "v3_large":
+        model = build_mobilenet_v3(num_classes=num_classes, version="large", width_multiplier=width_multiplier, cifar=cifar)
+    
+    # apply BSConv
+    if bsconv_variant is None:
+        pass
+    elif bsconv_variant == "bsconvu":
+        if version == "v1":
+            model = transform_mobilenetv1(model)
+        else:
+            raise ValueError("For MobileNetV1, only BSConv-U is supported")
+    elif bsconv_variant.startswith("bsconvs_p1d6"):
+        if version in ("v2", "v3_small", "v3_large"):
+            model = transform_mobilenetv2(model)
+        else:
+            raise ValueError("For MobileNetV2/V3, only BSConv-S (p=1/6) is supported")
+
+    return model
 
 
 ###
