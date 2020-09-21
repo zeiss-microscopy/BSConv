@@ -6,6 +6,12 @@ import torch.nn.init
 import bsconv.pytorch
 from bsconv.pytorch.common import conv1x1_block, conv3x3_block, conv7x7_block, Classifier
 
+
+###
+#%% ResNet building blocks
+###
+
+
 class InitUnitLarge(torch.nn.Module):
     def __init__(self,
                  in_channels,
@@ -18,6 +24,7 @@ class InitUnitLarge(torch.nn.Module):
         x = self.conv(x)
         x = self.pool(x)
         return x
+
 
 class InitUnitSmall(torch.nn.Module):
     def __init__(self,
@@ -37,6 +44,7 @@ class InitUnitSmall(torch.nn.Module):
         x = self.conv(x)
         return x
 
+
 class PostActivation(torch.nn.Module):
     def __init__(self,
                  channels):
@@ -48,6 +56,7 @@ class PostActivation(torch.nn.Module):
         x = self.bn(x)
         x = self.relu(x)
         return x
+
 
 class StandardUnit(torch.nn.Module):
     def __init__(self,
@@ -73,6 +82,7 @@ class StandardUnit(torch.nn.Module):
         x = x + residual
         x = self.relu(x)
         return x
+
 
 class PreactUnit(torch.nn.Module):
     def __init__(self,
@@ -102,6 +112,7 @@ class PreactUnit(torch.nn.Module):
         x = self.conv2(x)
         x = x + residual
         return x
+
 
 class ResNet(torch.nn.Module):
     def __init__(self,
@@ -166,6 +177,12 @@ class ResNet(torch.nn.Module):
         x = self.classifier(x)
         return x
 
+
+###
+#%% model definitions
+###
+
+
 def build_resnet(num_classes,
                  units_per_stage,
                  width_multiplier = 1.0,
@@ -192,452 +209,6 @@ def build_resnet(num_classes,
                  use_init_unit_large=use_init_unit_large,
                  in_size=in_size)
     return net
-
-###
-#%% bsconv replacer
-###
-
-def replace_bsconv_u(net):
-    replacer = bsconv.pytorch.BSConvU_Replacer()
-    net = replacer.apply(net)
-    return net
-
-def replace_bsconv_s(net, p=0.25, with_bn=True):
-    replacer = bsconv.pytorch.BSConvS_Replacer(p=p, with_bn=with_bn)
-    net = replacer.apply(net)
-    return net
-
-
-###
-#%% ResNets CIFAR
-###
-
-def cifar_resnet20(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[3, 3, 3], cifar=True)
-
-def cifar_resnet56(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[9, 9, 9], cifar=True)
-
-def cifar_resnet110(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[18, 18, 18], cifar=True)
-
-def cifar_resnet302(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[50, 50, 50], cifar=True)
-
-def cifar_resnet602(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[100, 100, 100], cifar=True)
-
-
-def cifar_resnet20_bsconvu(num_classes):
-    net = cifar_resnet20(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_resnet56_bsconvu(num_classes):
-    net = cifar_resnet56(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_resnet110_bsconvu(num_classes):
-    net = cifar_resnet110(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_resnet302_bsconvu(num_classes):
-    net = cifar_resnet302(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_resnet602_bsconvu(num_classes):
-    net = cifar_resnet602(num_classes)
-    return replace_bsconv_u(net)
-
-
-def cifar_resnet20_bsconvs_p1d4(num_classes):
-    net = cifar_resnet20(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_resnet56_bsconvs_p1d4(num_classes):
-    net = cifar_resnet56(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_resnet110_bsconvs_p1d4(num_classes):
-    net = cifar_resnet110(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_resnet302_bsconvs_p1d4(num_classes):
-    net = cifar_resnet302(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_resnet602_bsconvs_p1d4(num_classes):
-    net = cifar_resnet602(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-
-def cifar_resnet20_bsconvs_p1d8(num_classes):
-    net = cifar_resnet20(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_resnet56_bsconvs_p1d8(num_classes):
-    net = cifar_resnet56(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_resnet110_bsconvs_p1d8(num_classes):
-    net = cifar_resnet110(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_resnet302_bsconvs_p1d8(num_classes):
-    net = cifar_resnet302(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_resnet602_bsconvs_p1d8(num_classes):
-    net = cifar_resnet602(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-
-###
-#%% ResNets ImageNet
-###
-
-def resnet10(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[1, 1, 1, 1], cifar=False)
-
-def resnet18(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2, 2], cifar=False)
-
-def resnet26(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[3, 3, 3, 3], cifar=False)
-
-def resnet34(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[3, 4, 6, 3], cifar=False)
-
-def resnet68(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[3, 4, 23, 3], cifar=False)
-
-def resnet102(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[3, 8, 36, 3], cifar=False)
-
-
-def resnet10_bsconvu(num_classes):
-    net = resnet10(num_classes)
-    return replace_bsconv_u(net)
-
-def resnet18_bsconvu(num_classes):
-    net = resnet18(num_classes)
-    return replace_bsconv_u(net)
-
-def resnet26_bsconvu(num_classes):
-    net = resnet26(num_classes)
-    return replace_bsconv_u(net)
-
-def resnet34_bsconvu(num_classes):
-    net = resnet34(num_classes)
-    return replace_bsconv_u(net)
-
-def resnet68_bsconvu(num_classes):
-    net = resnet68(num_classes)
-    return replace_bsconv_u(net)
-
-def resnet102_bsconvu(num_classes):
-    net = resnet102(num_classes)
-    return replace_bsconv_u(net)
-
-
-###
-#%% WideResNets CIFAR
-###
-
-def cifar_wrn16_1(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2], preact=True, width_multiplier=1.0, cifar=True)
-
-def cifar_wrn16_2(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2], preact=True, width_multiplier=2.0, cifar=True)
-
-def cifar_wrn16_4(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2], preact=True, width_multiplier=4.0, cifar=True)
-
-def cifar_wrn16_8(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2], preact=True, width_multiplier=8.0, cifar=True)
-
-def cifar_wrn16_10(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2], preact=True, width_multiplier=10.0, cifar=True)
-
-def cifar_wrn16_12(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[2, 2, 2], preact=True, width_multiplier=12.0, cifar=True)
-
-
-def cifar_wrn28_1(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[4, 4, 4], preact=True, width_multiplier=1.0, cifar=True)
-
-def cifar_wrn28_2(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[4, 4, 4], preact=True, width_multiplier=2.0, cifar=True)
-
-def cifar_wrn28_3(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[4, 4, 4], preact=True, width_multiplier=3.0, cifar=True)
-
-def cifar_wrn28_4(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[4, 4, 4], preact=True, width_multiplier=4.0, cifar=True)
-
-def cifar_wrn28_8(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[4, 4, 4], preact=True, width_multiplier=8.0, cifar=True)
-
-def cifar_wrn28_10(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[4, 4, 4], preact=True, width_multiplier=10.0, cifar=True)
-
-def cifar_wrn28_12(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[4, 4, 4], preact=True, width_multiplier=12.0, cifar=True)
-
-
-def cifar_wrn40_1(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=1.0, cifar=True)
-
-def cifar_wrn40_2(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=2.0, cifar=True)
-
-def cifar_wrn40_3(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=3.0, cifar=True)
-
-def cifar_wrn40_4(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=4.0, cifar=True)
-
-def cifar_wrn40_8(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=8.0, cifar=True)
-
-def cifar_wrn40_10(num_classes):
-    return build_resnet(num_classes=num_classes, units_per_stage=[6, 6, 6], preact=True, width_multiplier=10.0, cifar=True)
-
-
-def cifar_wrn16_1_bsconvu(num_classes):
-    net = cifar_wrn16_1(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn16_2_bsconvu(num_classes):
-    net = cifar_wrn16_2(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn16_4_bsconvu(num_classes):
-    net = cifar_wrn16_4(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn16_8_bsconvu(num_classes):
-    net = cifar_wrn16_8(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn16_10_bsconvu(num_classes):
-    net = cifar_wrn16_10(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn16_12_bsconvu(num_classes):
-    net = cifar_wrn16_12(num_classes)
-    return replace_bsconv_u(net)
-
-
-def cifar_wrn28_1_bsconvu(num_classes):
-    net = cifar_wrn28_1(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn28_2_bsconvu(num_classes):
-    net = cifar_wrn28_2(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn28_3_bsconvu(num_classes):
-    net = cifar_wrn28_3(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn28_4_bsconvu(num_classes):
-    net = cifar_wrn28_4(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn28_8_bsconvu(num_classes):
-    net = cifar_wrn28_8(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn28_10_bsconvu(num_classes):
-    net = cifar_wrn28_10(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn28_12_bsconvu(num_classes):
-    net = cifar_wrn28_12(num_classes)
-    return replace_bsconv_u(net)
-
-
-def cifar_wrn40_1_bsconvu(num_classes):
-    net = cifar_wrn40_1(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn40_2_bsconvu(num_classes):
-    net = cifar_wrn40_2(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn40_3_bsconvu(num_classes):
-    net = cifar_wrn40_3(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn40_4_bsconvu(num_classes):
-    net = cifar_wrn40_4(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn40_8_bsconvu(num_classes):
-    net = cifar_wrn40_8(num_classes)
-    return replace_bsconv_u(net)
-
-def cifar_wrn40_10_bsconvu(num_classes):
-    net = cifar_wrn40_10(num_classes)
-    return replace_bsconv_u(net)
-
-
-def cifar_wrn16_1_bsconvs_p1d4(num_classes):
-    net = cifar_wrn16_1(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn16_2_bsconvs_p1d4(num_classes):
-    net = cifar_wrn16_2(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn16_4_bsconvs_p1d4(num_classes):
-    net = cifar_wrn16_4(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn16_8_bsconvs_p1d4(num_classes):
-    net = cifar_wrn16_8(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn16_10_bsconvs_p1d4(num_classes):
-    net = cifar_wrn16_10(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn16_12_bsconvs_p1d4(num_classes):
-    net = cifar_wrn16_12(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-
-def cifar_wrn28_1_bsconvs_p1d4(num_classes):
-    net = cifar_wrn28_1(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn28_2_bsconvs_p1d4(num_classes):
-    net = cifar_wrn28_2(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn28_3_bsconvs_p1d4(num_classes):
-    net = cifar_wrn28_3(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn28_4_bsconvs_p1d4(num_classes):
-    net = cifar_wrn28_4(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn28_8_bsconvs_p1d4(num_classes):
-    net = cifar_wrn28_8(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn28_10_bsconvs_p1d4(num_classes):
-    net = cifar_wrn28_10(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn28_12_bsconvs_p1d4(num_classes):
-    net = cifar_wrn28_12(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-
-def cifar_wrn40_1_bsconvs_p1d4(num_classes):
-    net = cifar_wrn40_1(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn40_2_bsconvs_p1d4(num_classes):
-    net = cifar_wrn40_2(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn40_3_bsconvs_p1d4(num_classes):
-    net = cifar_wrn40_3(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn40_4_bsconvs_p1d4(num_classes):
-    net = cifar_wrn40_4(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn40_8_bsconvs_p1d4(num_classes):
-    net = cifar_wrn40_8(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-def cifar_wrn40_10_bsconvs_p1d4(num_classes):
-    net = cifar_wrn40_10(num_classes)
-    return replace_bsconv_s(net, p=0.25)
-
-
-def cifar_wrn16_1_bsconvs_p1d8(num_classes):
-    net = cifar_wrn16_1(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn16_2_bsconvs_p1d8(num_classes):
-    net = cifar_wrn16_2(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn16_4_bsconvs_p1d8(num_classes):
-    net = cifar_wrn16_4(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn16_8_bsconvs_p1d8(num_classes):
-    net = cifar_wrn16_8(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn16_10_bsconvs_p1d8(num_classes):
-    net = cifar_wrn16_10(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn16_12_bsconvs_p1d8(num_classes):
-    net = cifar_wrn16_12(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-
-def cifar_wrn28_1_bsconvs_p1d8(num_classes):
-    net = cifar_wrn28_1(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn28_2_bsconvs_p1d8(num_classes):
-    net = cifar_wrn28_2(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn28_3_bsconvs_p1d8(num_classes):
-    net = cifar_wrn28_3(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn28_4_bsconvs_p1d8(num_classes):
-    net = cifar_wrn28_4(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn28_8_bsconvs_p1d8(num_classes):
-    net = cifar_wrn28_8(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn28_10_bsconvs_p1d8(num_classes):
-    net = cifar_wrn28_10(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn28_12_bsconvs_p1d8(num_classes):
-    net = cifar_wrn28_12(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-
-def cifar_wrn40_1_bsconvs_p1d8(num_classes):
-    net = cifar_wrn40_1(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn40_2_bsconvs_p1d8(num_classes):
-    net = cifar_wrn40_2(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn40_3_bsconvs_p1d8(num_classes):
-    net = cifar_wrn40_3(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn40_4_bsconvs_p1d8(num_classes):
-    net = cifar_wrn40_4(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn40_8_bsconvs_p1d8(num_classes):
-    net = cifar_wrn40_8(num_classes)
-    return replace_bsconv_s(net, p=0.125)
-
-def cifar_wrn40_10_bsconvs_p1d8(num_classes):
-    net = cifar_wrn40_10(num_classes)
-    return replace_bsconv_s(net, p=0.125)
 
 
 def get_resnet(architecture, num_classes):
