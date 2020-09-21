@@ -8,6 +8,11 @@ import bsconv.pytorch
 from bsconv.pytorch.common import conv1x1_block, conv3x3_block, conv3x3_dw_block, conv5x5_dw_block, SEUnit, Classifier
 
 
+###
+#%% MobileNet building blocks
+###
+
+
 class DepthwiseSeparableConvBlock(torch.nn.Module):
     def __init__(self,
                  in_channels,
@@ -177,6 +182,7 @@ class MobileNetV2(torch.nn.Module):
         x = self.classifier(x)
         return x
 
+
 class MobileNetV3(torch.nn.Module):
     def __init__(self,
                  num_classes,
@@ -322,6 +328,7 @@ def build_mobilenet_v2(num_classes,
                        final_conv_channels=final_conv_channels,
                        in_size=in_size)
 
+
 def build_mobilenet_v3(num_classes,
                        version,
                        width_multiplier = 1.0,
@@ -388,7 +395,6 @@ def build_mobilenet_v3(num_classes,
 
 
 def transform_mobilenetv1(net):
-
     class DSCFilter(bsconv.pytorch.replacers.ModuleFilter):
         def apply(self, module, name, full_name):
             return isinstance(module, DepthwiseSeparableConvBlock)
@@ -430,7 +436,6 @@ def transform_mobilenetv1(net):
 
 
 def transform_mobilenetv2(net):
-
     class LinearBottleneckFilter(bsconv.pytorch.replacers.ModuleFilter):
         def apply(self, module, name, full_name):
             return isinstance(module, LinearBottleneck)
@@ -509,71 +514,3 @@ def get_mobilenet(architecture, num_classes):
             raise ValueError("For MobileNetV2/V3, only BSConv-S (p=1/6) is supported")
 
     return model
-
-
-###
-#%% MobileNet CIFAR
-###
-
-def cifar_mobilenetv1_w1(num_classes):
-    return build_mobilenet_v1(num_classes=num_classes, cifar=True)
-
-def cifar_mobilenetv2_w1(num_classes):
-    return build_mobilenet_v2(num_classes=num_classes, cifar=True)
-
-def cifar_mobilenetv3_small_w1(num_classes):
-    return build_mobilenet_v3(num_classes=num_classes, version="small", cifar=True)
-
-def cifar_mobilenetv3_large_w1(num_classes):
-    return build_mobilenet_v3(num_classes=num_classes, version="large", cifar=True)
-
-
-def cifar_mobilenetv1_w1_bsconvu(num_classes):
-    net = cifar_mobilenetv1_w1(num_classes)
-    return transform_mobilenetv1(net)
-
-def cifar_mobilenetv2_w1_bsconvs(num_classes):
-    net = cifar_mobilenetv2_w1(num_classes)
-    return transform_mobilenetv2(net)
-
-def cifar_mobilenetv3_small_w1_bsconvs(num_classes):
-    net = cifar_mobilenetv3_small_w1(num_classes)
-    return transform_mobilenetv2(net)
-
-def cifar_mobilenetv3_large_w1_bsconvs(num_classes):
-    net = cifar_mobilenetv3_large_w1(num_classes)
-    return transform_mobilenetv2(net)
-
-
-###
-#%% MobileNet ImageNet
-###
-
-def mobilenetv1_w1(num_classes):
-    return build_mobilenet_v1(num_classes=num_classes, cifar=False)
-
-def mobilenetv2_w1(num_classes):
-    return build_mobilenet_v2(num_classes=num_classes, cifar=False)
-
-def mobilenetv3_small_w1(num_classes):
-    return build_mobilenet_v3(num_classes=num_classes, version="small", cifar=False)
-
-def mobilenetv3_large_w1(num_classes):
-    return build_mobilenet_v3(num_classes=num_classes, version="large", cifar=False)
-
-
-def mobilenetv1_w1_bsconvu(num_classes):
-    net = mobilenetv1_w1(num_classes)
-    return transform_mobilenetv1(net)
-
-def mobilenetv2_w1_bsconvs(num_classes):
-    net = mobilenetv2_w1(num_classes)
-    return transform_mobilenetv2(net)
-
-def mobilenetv3_small_w1_bsconvs(num_classes):
-    net = mobilenetv3_small_w1(num_classes)
-    return transform_mobilenetv2(net)
-
-def mobilenetv3_large_w1_bsconvs(num_classes):
-    net = mobilenetv3_large_w1(num_classes)
-    return transform_mobilenetv2(net)
