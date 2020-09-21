@@ -25,37 +25,61 @@ model = bsconv.pytorch.get_model('cifar_resnet110_bsconvu', num_classes=100)
 ```
 
 Currently, available architectures are:
-* CIFAR10 & CIFAR100 datasets
-    ```
-    cifar_resnet20
-    cifar_resnet56
-    cifar_resnet110
-    cifar_resnet20_bsconvu
-    cifar_resnet56_bsconvu
-    cifar_resnet110_bsconvu
+
+    # ResNets
+    resnet(10|18|26|34|68|102)
+    resnet(10|18|26|34|68|102)_bsconvu
+    resnet(10|18|26|34|68|102)_bsconvs_pXdY    # BSConv-S p=X/Y
+
+    # MobileNetsV1 (only support BSConv-U)
+    mobilenetv1_wXdY            # width w=X/Y
+    mobilenetv1_wXdY_bsconvu    # width w=X/Y
     
-    cifar_wrn40_3
-    cifar_wrn40_8
-    cifar_wrn40_3_bsconvu
-    cifar_wrn40_8_bsconvu
+    # MobileNetsV2 (only support BSConv-S with p=1/6)
+    mobilenetv2_wXdY                 # width w=X/Y
+    mobilenetv2_wXdY_bsconvs_p1d6    # width w=X/Y
     
-    cifar_mobilenetv1_w1
-    cifar_mobilenetv2_w1
-    cifar_mobilenetv3_small_w1
-    cifar_mobilenetv3_large_w1
-    cifar_mobilenetv1_w1_bsconvu
-    cifar_mobilenetv2_w1_bsconvs
-    cifar_mobilenetv3_small_w1_bsconvs
-    cifar_mobilenetv3_large_w1_bsconvs
-    ```
-* ImageNet and fine-grained datasets
-    ```
+    # MobileNetsV3 (only support BSConv-S with p=1/6)
+    mobilenetv3_small_wXdY                 # width w=X/Y
+    mobilenetv3_large_wXdY                 # width w=X/Y
+    mobilenetv3_small_wXdY_bsconvs_p1d6    # width w=X/Y
+    mobilenetv3_large_wXdY_bsconvs_p1d6    # width w=X/Y
+
+    # CIFAR ResNets
+    cifar_resnet(20|56|110|302|602)
+    cifar_resnet(20|56|110|302|602)_bsconvu
+    cifar_resnet(20|56|110|302|602)_bsconvs_pXdY    # BSConv-S p=X/Y
+    
+    # CIFAR WideResNets
+    cifar_wrn(16|28|40)_(1|2|3|...)
+    cifar_wrn(16|28|40)_(1|2|3|...)_bsconvu
+    cifar_wrn(16|28|40)_(1|2|3|...)_bsconvs_pXdY    # BSConv-S p=X/Y
+    
+    # CIFAR MobileNetsV1 (only support BSConv-U)
+    cifar_mobilenetv1_wXdY            # width w=X/Y
+    cifar_mobilenetv1_wXdY_bsconvu    # width w=X/Y
+    
+    # CIFAR MobileNetsV2 (only support BSConv-S with p=1/6)
+    cifar_mobilenetv2_wXdY                 # width w=X/Y
+    cifar_mobilenetv2_wXdY_bsconvs_p1d6    # width w=X/Y
+    
+    # CIFAR MobileNetsV3 (only support BSConv-S with p=1/6)
+    cifar_mobilenetv3_small_wXdY                 # width w=X/Y
+    cifar_mobilenetv3_large_wXdY                 # width w=X/Y
+    cifar_mobilenetv3_small_wXdY_bsconvs_p1d6    # width w=X/Y
+    cifar_mobilenetv3_large_wXdY_bsconvs_p1d6    # width w=X/Y
+    
+Concrete examples (i.e., architecture strings which can be passed to `bsconv.pytorch.get_model`) are:
+
+    # ResNets
     resnet10
     resnet18
     resnet26
     resnet34
     resnet68
     resnet102
+    
+    # ResNets + BSConv-U
     resnet10_bsconvu
     resnet18_bsconvu
     resnet26_bsconvu
@@ -63,16 +87,254 @@ Currently, available architectures are:
     resnet68_bsconvu
     resnet102_bsconvu
     
-    mobilenetv1_w1
-    mobilenetv2_w1
-    mobilenetv3_small_w1
-    mobilenetv3_large_w1
-    mobilenetv1_w1_bsconvu
-    mobilenetv2_w1_bsconvs
-    mobilenetv3_small_w1_bsconvs
-    mobilenetv3_large_w1_bsconvs
-    ```
+    # ResNets + BSConv-S (p=1/4)
+    resnet10_bsconvs_p1d4
+    resnet18_bsconvs_p1d4
+    resnet26_bsconvs_p1d4
+    resnet34_bsconvs_p1d4
+    resnet68_bsconvs_p1d4
+    resnet102_bsconvs_p1d4
+    
+    # ResNets + BSConv-S (p=1/8)
+    resnet10_bsconvs_p1d8
+    resnet18_bsconvs_p1d8
+    resnet26_bsconvs_p1d8
+    resnet34_bsconvs_p1d8
+    resnet68_bsconvs_p1d8
+    resnet102_bsconvs_p1d8
 
+    # MobileNetsV1
+    mobilenetv1_w1
+    mobilenetv1_w3d4
+    mobilenetv1_w1d2
+    mobilenetv1_w1d4
+    
+    # MobileNetsV1 + BSconv-U
+    mobilenetv1_w1_bsconvu
+    mobilenetv1_w3d4_bsconvu
+    mobilenetv1_w1d2_bsconvu
+    mobilenetv1_w1d4_bsconvu
+    
+    # MobileNetsV2
+    mobilenetv2_w1
+    mobilenetv2_w3d4
+    mobilenetv2_w1d2
+    mobilenetv2_w1d4
+    
+    # MobileNetsV2 + BSConv-S (p=1/6)
+    mobilenetv2_w1_bsconvs_p1d6
+    mobilenetv2_w3d4_bsconvs_p1d6
+    mobilenetv2_w1d2_bsconvs_p1d6
+    mobilenetv2_w1d4_bsconvs_p1d6
+    
+    # MobileNetsV3-small
+    mobilenetv3_small_w1
+    mobilenetv3_small_w3d4
+    mobilenetv3_small_w1d2
+    mobilenetv3_small_w7d20
+    
+    # MobileNetsV3-small + BSConv-S (p=1/6)
+    mobilenetv3_small_w1_bsconvs_p1d6
+    mobilenetv3_small_w3d4_bsconvs_p1d6
+    mobilenetv3_small_w1d2_bsconvs_p1d6
+    mobilenetv3_small_w7d20_bsconvs_p1d6
+    
+    # MobileNetsV3-large
+    mobilenetv3_large_w1
+    mobilenetv3_large_w3d4
+    mobilenetv3_large_w1d2
+    mobilenetv3_large_w7d20
+    
+    # MobileNetsV3-large + BSConv-S (p=1/6)
+    mobilenetv3_large_w1_bsconvs_p1d6
+    mobilenetv3_large_w3d4_bsconvs_p1d6
+    mobilenetv3_large_w1d2_bsconvs_p1d6
+    mobilenetv3_large_w7d20_bsconvs_p1d6
+
+    # CIFAR ResNets
+    cifar_resnet20
+    cifar_resnet56
+    cifar_resnet110
+    cifar_resnet302
+    cifar_resnet602
+    
+    # CIFAR ResNets + BSConv-U
+    cifar_resnet20_bsconvu
+    cifar_resnet56_bsconvu
+    cifar_resnet110_bsconvu
+    cifar_resnet302_bsconvu
+    cifar_resnet602_bsconvu
+    
+    # CIFAR ResNets + BSConv-S (p=1/4)
+    cifar_resnet20_bsconvs_p1d4
+    cifar_resnet56_bsconvs_p1d4
+    cifar_resnet110_bsconvs_p1d4
+    cifar_resnet302_bsconvs_p1d4
+    cifar_resnet602_bsconvs_p1d4
+    
+    # CIFAR ResNets + BSConv-S (p=1/8)
+    cifar_resnet20_bsconvs_p1d8
+    cifar_resnet56_bsconvs_p1d8
+    cifar_resnet110_bsconvs_p1d8
+    cifar_resnet302_bsconvs_p1d8
+    cifar_resnet602_bsconvs_p1d8
+    
+    # CIFAR WideResNets-16
+    cifar_wrn16_1
+    cifar_wrn16_2
+    cifar_wrn16_4
+    cifar_wrn16_6
+    cifar_wrn16_8
+    cifar_wrn16_10
+    cifar_wrn16_12
+    
+    # CIFAR WideResNets-16 + BSConv-U
+    cifar_wrn16_1_bsconvu
+    cifar_wrn16_2_bsconvu
+    cifar_wrn16_4_bsconvu
+    cifar_wrn16_6_bsconvu
+    cifar_wrn16_8_bsconvu
+    cifar_wrn16_10_bsconvu
+    cifar_wrn16_12_bsconvu
+    
+    # CIFAR WideResNets-16 + BSConv-S (p=1/4)
+    cifar_wrn16_1_bsconvs_p1d4
+    cifar_wrn16_2_bsconvs_p1d4
+    cifar_wrn16_4_bsconvs_p1d4
+    cifar_wrn16_6_bsconvs_p1d4
+    cifar_wrn16_8_bsconvs_p1d4
+    cifar_wrn16_10_bsconvs_p1d4
+    cifar_wrn16_12_bsconvs_p1d4
+    
+    # CIFAR WideResNets-16 + BSConv-S (p=1/8)
+    cifar_wrn16_1_bsconvs_p1d8
+    cifar_wrn16_2_bsconvs_p1d8
+    cifar_wrn16_4_bsconvs_p1d8
+    cifar_wrn16_6_bsconvs_p1d8
+    cifar_wrn16_8_bsconvs_p1d8
+    cifar_wrn16_10_bsconvs_p1d8
+    cifar_wrn16_12_bsconvs_p1d8
+    
+    # CIFAR WideResNets-28
+    cifar_wrn28_1
+    cifar_wrn28_2
+    cifar_wrn28_4
+    cifar_wrn28_6
+    cifar_wrn28_8
+    cifar_wrn28_10
+    cifar_wrn28_12
+    
+    # CIFAR WideResNets-16 + BSConv-U
+    cifar_wrn28_1_bsconvu
+    cifar_wrn28_2_bsconvu
+    cifar_wrn28_4_bsconvu
+    cifar_wrn28_6_bsconvu
+    cifar_wrn28_8_bsconvu
+    cifar_wrn28_10_bsconvu
+    cifar_wrn28_12_bsconvu
+    
+    # CIFAR WideResNets-16 + BSConv-S (p=1/4)
+    cifar_wrn28_1_bsconvs_p1d4
+    cifar_wrn28_2_bsconvs_p1d4
+    cifar_wrn28_4_bsconvs_p1d4
+    cifar_wrn28_6_bsconvs_p1d4
+    cifar_wrn28_8_bsconvs_p1d4
+    cifar_wrn28_10_bsconvs_p1d4
+    cifar_wrn28_12_bsconvs_p1d4
+    
+    # CIFAR WideResNets-16 + BSConv-S (p=1/8)
+    cifar_wrn28_1_bsconvs_p1d8
+    cifar_wrn28_2_bsconvs_p1d8
+    cifar_wrn28_4_bsconvs_p1d8
+    cifar_wrn28_6_bsconvs_p1d8
+    cifar_wrn28_8_bsconvs_p1d8
+    cifar_wrn28_10_bsconvs_p1d8
+    cifar_wrn28_12_bsconvs_p1d8
+    
+    # CIFAR WideResNets-40
+    cifar_wrn40_1
+    cifar_wrn40_2
+    cifar_wrn40_4
+    cifar_wrn40_6
+    cifar_wrn40_8
+    cifar_wrn40_10
+    cifar_wrn40_12
+    
+    # CIFAR WideResNets-40 + BSConv-U
+    cifar_wrn40_1_bsconvu
+    cifar_wrn40_2_bsconvu
+    cifar_wrn40_4_bsconvu
+    cifar_wrn40_6_bsconvu
+    cifar_wrn40_8_bsconvu
+    cifar_wrn40_10_bsconvu
+    cifar_wrn40_12_bsconvu
+    
+    # CIFAR WideResNets-40 + BSConv-S (p=1/4)
+    cifar_wrn40_1_bsconvs_p1d4
+    cifar_wrn40_2_bsconvs_p1d4
+    cifar_wrn40_4_bsconvs_p1d4
+    cifar_wrn40_6_bsconvs_p1d4
+    cifar_wrn40_8_bsconvs_p1d4
+    cifar_wrn40_10_bsconvs_p1d4
+    cifar_wrn40_12_bsconvs_p1d4
+    
+    # CIFAR WideResNets-40 + BSConv-S (p=1/8)
+    cifar_wrn40_1_bsconvs_p1d8
+    cifar_wrn40_2_bsconvs_p1d8
+    cifar_wrn40_4_bsconvs_p1d8
+    cifar_wrn40_6_bsconvs_p1d8
+    cifar_wrn40_8_bsconvs_p1d8
+    cifar_wrn40_10_bsconvs_p1d8
+    cifar_wrn40_12_bsconvs_p1d8
+    
+    # CIFAR MobileNetsV1
+    cifar_mobilenetv1_w1
+    cifar_mobilenetv1_w3d4
+    cifar_mobilenetv1_w1d2
+    cifar_mobilenetv1_w1d4
+    
+    # CIFAR MobileNetsV1 + BSconv-U
+    cifar_mobilenetv1_w1_bsconvu
+    cifar_mobilenetv1_w3d4_bsconvu
+    cifar_mobilenetv1_w1d2_bsconvu
+    cifar_mobilenetv1_w1d4_bsconvu
+    
+    # CIFAR MobileNetsV2
+    cifar_mobilenetv2_w1
+    cifar_mobilenetv2_w3d4
+    cifar_mobilenetv2_w1d2
+    cifar_mobilenetv2_w1d4
+    
+    # CIFAR MobileNetsV2 + BSConv-S (p=1/6)
+    cifar_mobilenetv2_w1_bsconvs_p1d6
+    cifar_mobilenetv2_w3d4_bsconvs_p1d6
+    cifar_mobilenetv2_w1d2_bsconvs_p1d6
+    cifar_mobilenetv2_w1d4_bsconvs_p1d6
+    
+    # CIFAR MobileNetsV3-small
+    cifar_mobilenetv3_small_w1
+    cifar_mobilenetv3_small_w3d4
+    cifar_mobilenetv3_small_w1d2
+    cifar_mobilenetv3_small_w7d20
+    
+    # CIFAR MobileNetsV3-small + BSConv-S (p=1/6)
+    cifar_mobilenetv3_small_w1_bsconvs_p1d6
+    cifar_mobilenetv3_small_w3d4_bsconvs_p1d6
+    cifar_mobilenetv3_small_w1d2_bsconvs_p1d6
+    cifar_mobilenetv3_small_w7d20_bsconvs_p1d6
+    
+    # CIFAR MobileNetsV3-large
+    cifar_mobilenetv3_large_w1
+    cifar_mobilenetv3_large_w3d4
+    cifar_mobilenetv3_large_w1d2
+    cifar_mobilenetv3_large_w7d20
+    
+    # CIFAR MobileNetsV3-large + BSConv-S (p=1/6)
+    cifar_mobilenetv3_large_w1_bsconvs_p1d6
+    cifar_mobilenetv3_large_w3d4_bsconvs_p1d6
+    cifar_mobilenetv3_large_w1d2_bsconvs_p1d6
+    cifar_mobilenetv3_large_w7d20_bsconvs_p1d6
+    
 **More architectures will be added soon.**
 
 
