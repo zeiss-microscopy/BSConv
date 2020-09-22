@@ -424,6 +424,13 @@ Please note that the code provided here is work-in-progress. Therefore, some fea
 Change Log
 ----------
 
+### 0.4.0 (2020-09-22)
+
+* BSConv for PyTorch:
+    * added support for more model architectures (see `bsconv.pytorch.get_model`)
+    * added result tables and plots for ResNets, WRNs, MobileNets on CIFAR datasets
+    * removed script `bin/bsconv_pytorch_list_architectures.py`, because `bsconv.pytorch.get_model` is more flexible now (see the BSConv PyTorch usage readme for available architectures)
+
 ### 0.3.0 (2020-06-16)
 
 * BSConv for PyTorch:
