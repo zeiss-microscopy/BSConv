@@ -14,6 +14,9 @@ from bsconv.pytorch.common import conv1x1_block, conv3x3_block, conv3x3_dw_block
 
 
 class DepthwiseSeparableConvBlock(torch.nn.Module):
+    """
+    Depthwise-separable convolution (DSC) block internally used in MobileNets.
+    """
     def __init__(self,
                  in_channels,
                  out_channels,
@@ -30,6 +33,9 @@ class DepthwiseSeparableConvBlock(torch.nn.Module):
 
 
 class LinearBottleneck(torch.nn.Module):
+    """
+    Linear bottleneck block internally used in MobileNets.
+    """
     def __init__(self,
                  in_channels,
                  mid_channels,
@@ -67,6 +73,12 @@ class LinearBottleneck(torch.nn.Module):
 
 
 class MobileNetV1(torch.nn.Module):
+    """
+    Class for constructing MobileNetsV1.
+    
+    If you are in doubt, please use the high-level function `get_mobilenet` to
+    obtain ready-to-use models.
+    """
     def __init__(self,
                  num_classes,
                  init_conv_channels,
@@ -123,6 +135,12 @@ class MobileNetV1(torch.nn.Module):
 
 
 class MobileNetV2(torch.nn.Module):
+    """
+    Class for constructing MobileNetsV2.
+    
+    If you are in doubt, please use the high-level function `get_mobilenet` to
+    obtain ready-to-use models.
+    """
     def __init__(self,
                  num_classes,
                  init_conv_channels,
@@ -184,6 +202,12 @@ class MobileNetV2(torch.nn.Module):
 
 
 class MobileNetV3(torch.nn.Module):
+    """
+    Class for constructing MobileNetsV3.
+    
+    If you are in doubt, please use the high-level function `get_mobilenet` to
+    obtain ready-to-use models.
+    """
     def __init__(self,
                  num_classes,
                  init_conv_channels,
@@ -266,9 +290,23 @@ class MobileNetV3(torch.nn.Module):
 ###
 
 
-def build_mobilenet_v1(num_classes,
-                       width_multiplier = 1.0,
-                       cifar = False):
+def build_mobilenet_v1(num_classes, width_multiplier=1.0, cifar=False):
+    """
+    Construct a MobileNetV1 from the given set of parameters.
+    
+    If you are in doubt, please use the high-level function `get_mobilenet` to
+    obtain ready-to-use models.
+    
+    Args:
+        num_classes (int): Number of classes for the classification layer.
+        width_multiplier (float): Multiplier for the number of channels.
+        cifar (bool): if `True`, make the model suitable for the CIFAR10/100
+            datasets. Otherwise, the model will be suited for ImageNet and
+            fine-grained datasets.
+        
+    Returns:
+        The constructed MobileNetV1.
+    """
 
     init_conv_channels = 32
     channels = [[64], [128, 128], [256, 256], [512, 512, 512, 512, 512, 512], [1024, 1024]]
@@ -294,10 +332,23 @@ def build_mobilenet_v1(num_classes,
                        in_size=in_size)
 
 
-def build_mobilenet_v2(num_classes,
-                       width_multiplier = 1.0,
-                       cifar = False):
-
+def build_mobilenet_v2(num_classes, width_multiplier=1.0, cifar=False):
+    """
+    Construct a MobileNetV2 from the given set of parameters.
+    
+    If you are in doubt, please use the high-level function `get_mobilenet` to
+    obtain ready-to-use models.
+    
+    Args:
+        num_classes (int): Number of classes for the classification layer.
+        width_multiplier (float): Multiplier for the number of channels.
+        cifar (bool): if `True`, make the model suitable for the CIFAR10/100
+            datasets. Otherwise, the model will be suited for ImageNet and
+            fine-grained datasets.
+        
+    Returns:
+        The constructed MobileNetV2.
+    """
     init_conv_channels = 32
     channels = [[16], [24, 24], [32, 32, 32], [64, 64, 64, 64, 96, 96, 96], [160, 160, 160, 320]]
     mid_channels = [[32], [96, 144], [144, 192, 192], [192, 384, 384, 384, 384, 576, 576], [576, 960, 960, 960]]
@@ -329,12 +380,27 @@ def build_mobilenet_v2(num_classes,
                        in_size=in_size)
 
 
-def build_mobilenet_v3(num_classes,
-                       version,
-                       width_multiplier = 1.0,
-                       cifar = False,
-                       use_lightweight_head = True):
-
+def build_mobilenet_v3(num_classes, version, width_multiplier=1.0, cifar=False, use_lightweight_head=True):
+    """
+    Construct a MobileNetV3 from the given set of parameters.
+    
+    If you are in doubt, please use the high-level function `get_mobilenet` to
+    obtain ready-to-use models.
+    
+    Args:
+        num_classes (int): Number of classes for the classification layer.
+        version (str): can be `"small"` or `"large"` for MobileNetV3-small or
+            MobileNetV3-large.
+        width_multiplier (float): Multiplier for the number of channels.
+        cifar (bool): if `True`, make the model suitable for the CIFAR10/100
+            datasets. Otherwise, the model will be suited for ImageNet and
+            fine-grained datasets.
+        use_lightweight_head (bool): If `True`, use a smaller head than
+            originally defined to reduce model complexity.
+        
+    Returns:
+        The constructed MobileNetV3.
+    """
     in_size = (224, 224)
     init_conv_channels = 16
     init_conv_stride = 2
@@ -395,6 +461,18 @@ def build_mobilenet_v3(num_classes,
 
 
 def transform_mobilenetv1(net):
+    """
+    Transform a given MobileNetV1 `net` to its corresponding BSConv-U variant.
+    
+    For details, see paper Sect. 4.1.
+    
+    Args:
+        net (PyTorch model): The MobileNetV1 to be transformed.
+        
+    Returns:
+        The transformed MobileNet as BSConv-U variant.
+    """
+    
     class DSCFilter(bsconv.pytorch.replacers.ModuleFilter):
         def apply(self, module, name, full_name):
             return isinstance(module, DepthwiseSeparableConvBlock)
@@ -436,6 +514,18 @@ def transform_mobilenetv1(net):
 
 
 def transform_mobilenetv2(net):
+    """
+    Transform a given MobileNetV2 or MobileNetV3 `net` to its corresponding
+    BSConv-S (p=1/6) variant.
+    
+    For details, see paper, Sect. 4.2.
+    
+    Args:
+        net (PyTorch model): The MobileNetV2 or MobileNetV3 to be transformed.
+        
+    Returns:
+        The transformed MobileNet as BSConv-S (p=1/6) variant.
+    """
     class LinearBottleneckFilter(bsconv.pytorch.replacers.ModuleFilter):
         def apply(self, module, name, full_name):
             return isinstance(module, LinearBottleneck)
@@ -472,6 +562,118 @@ def transform_mobilenetv2(net):
 
 
 def get_mobilenet(architecture, num_classes):
+    """
+    Return a MobileNet specified by the string `architecture`.
+    
+    Args:
+        architecture (str): MobileNet architecture specification
+            (see below for examples).
+        num_classes (int): Number of classes for the classification layer.
+        
+    Returns:
+        The constructed MobileNet.
+    
+    Examples for `architecture`:
+        # MobileNetsV1
+        mobilenetv1_w1
+        mobilenetv1_w3d4
+        mobilenetv1_w1d2
+        mobilenetv1_w1d4
+        
+        # MobileNetsV1 + BSconv-U
+        mobilenetv1_w1_bsconvu
+        mobilenetv1_w3d4_bsconvu
+        mobilenetv1_w1d2_bsconvu
+        mobilenetv1_w1d4_bsconvu
+        
+        # MobileNetsV2
+        mobilenetv2_w1
+        mobilenetv2_w3d4
+        mobilenetv2_w1d2
+        mobilenetv2_w1d4
+        
+        # MobileNetsV2 + BSConv-S (p=1/6)
+        mobilenetv2_w1_bsconvs_p1d6
+        mobilenetv2_w3d4_bsconvs_p1d6
+        mobilenetv2_w1d2_bsconvs_p1d6
+        mobilenetv2_w1d4_bsconvs_p1d6
+        
+        # MobileNetsV3-small
+        mobilenetv3_small_w1
+        mobilenetv3_small_w3d4
+        mobilenetv3_small_w1d2
+        mobilenetv3_small_w7d20
+        
+        # MobileNetsV3-small + BSConv-S (p=1/6)
+        mobilenetv3_small_w1_bsconvs_p1d6
+        mobilenetv3_small_w3d4_bsconvs_p1d6
+        mobilenetv3_small_w1d2_bsconvs_p1d6
+        mobilenetv3_small_w7d20_bsconvs_p1d6
+        
+        # MobileNetsV3-large
+        mobilenetv3_large_w1
+        mobilenetv3_large_w3d4
+        mobilenetv3_large_w1d2
+        mobilenetv3_large_w7d20
+        
+        # MobileNetsV3-large + BSConv-S (p=1/6)
+        mobilenetv3_large_w1_bsconvs_p1d6
+        mobilenetv3_large_w3d4_bsconvs_p1d6
+        mobilenetv3_large_w1d2_bsconvs_p1d6
+        mobilenetv3_large_w7d20_bsconvs_p1d6
+        
+        # CIFAR MobileNetsV1
+        cifar_mobilenetv1_w1
+        cifar_mobilenetv1_w3d4
+        cifar_mobilenetv1_w1d2
+        cifar_mobilenetv1_w1d4
+        
+        # CIFAR MobileNetsV1 + BSconv-U
+        cifar_mobilenetv1_w1_bsconvu
+        cifar_mobilenetv1_w3d4_bsconvu
+        cifar_mobilenetv1_w1d2_bsconvu
+        cifar_mobilenetv1_w1d4_bsconvu
+        
+        # CIFAR MobileNetsV2
+        cifar_mobilenetv2_w1
+        cifar_mobilenetv2_w3d4
+        cifar_mobilenetv2_w1d2
+        cifar_mobilenetv2_w1d4
+        
+        # CIFAR MobileNetsV2 + BSConv-S (p=1/6)
+        cifar_mobilenetv2_w1_bsconvs_p1d6
+        cifar_mobilenetv2_w3d4_bsconvs_p1d6
+        cifar_mobilenetv2_w1d2_bsconvs_p1d6
+        cifar_mobilenetv2_w1d4_bsconvs_p1d6
+        
+        # CIFAR MobileNetsV3-small
+        cifar_mobilenetv3_small_w1
+        cifar_mobilenetv3_small_w3d4
+        cifar_mobilenetv3_small_w1d2
+        cifar_mobilenetv3_small_w7d20
+        
+        # CIFAR MobileNetsV3-small + BSConv-S (p=1/6)
+        cifar_mobilenetv3_small_w1_bsconvs_p1d6
+        cifar_mobilenetv3_small_w3d4_bsconvs_p1d6
+        cifar_mobilenetv3_small_w1d2_bsconvs_p1d6
+        cifar_mobilenetv3_small_w7d20_bsconvs_p1d6
+        
+        # CIFAR MobileNetsV3-large
+        cifar_mobilenetv3_large_w1
+        cifar_mobilenetv3_large_w3d4
+        cifar_mobilenetv3_large_w1d2
+        cifar_mobilenetv3_large_w7d20
+        
+        # CIFAR MobileNetsV3-large + BSConv-S (p=1/6)
+        cifar_mobilenetv3_large_w1_bsconvs_p1d6
+        cifar_mobilenetv3_large_w3d4_bsconvs_p1d6
+        cifar_mobilenetv3_large_w1d2_bsconvs_p1d6
+        cifar_mobilenetv3_large_w7d20_bsconvs_p1d6
+    
+    See https://github.com/zeiss-microscopy/BSConv/blob/master/bsconv/pytorch/README.md
+    for a list of possible architectures.
+    """
+    
     # parse architecture string
     pattern = r"^(?P<cifar>cifar_)?mobilenet(?P<version>v1|v2|v3_small|v3_large)_w(?P<width_numerator>[0-9]+)(d(?P<width_denominator>[0-9]+))?(_(?P<bsconv_variant>bsconvu|bsconvs_p1d6))?$"
     match = re.match(pattern, architecture)
