@@ -113,6 +113,8 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     resnet68_bsconvs_p1d8
     resnet102_bsconvs_p1d8
 
+    ################################################################################
+
     # Pre-Activation ResNets (aka ResNetsV2)
     preresnet10
     preresnet18
@@ -144,6 +146,8 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     preresnet34_bsconvs_p1d8
     preresnet68_bsconvs_p1d8
     preresnet102_bsconvs_p1d8
+
+    ################################################################################
 
     # MobileNetsV1
     mobilenetv1_w1
@@ -193,6 +197,8 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     mobilenetv3_large_w1d2_bsconvs_p1d6
     mobilenetv3_large_w7d20_bsconvs_p1d6
 
+    ################################################################################
+
     # CIFAR ResNets
     cifar_resnet20
     cifar_resnet56
@@ -221,6 +227,8 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_resnet302_bsconvs_p1d8
     cifar_resnet602_bsconvs_p1d8
     
+    ################################################################################
+    
     # CIFAR Pre-Activation ResNets (aka ResNetsV2)
     cifar_preresnet20
     cifar_preresnet56
@@ -248,6 +256,8 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_preresnet110_bsconvs_p1d8
     cifar_preresnet302_bsconvs_p1d8
     cifar_preresnet602_bsconvs_p1d8
+    
+    ################################################################################
     
     # CIFAR WideResNets-16
     cifar_wrn16_1
@@ -294,7 +304,7 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_wrn28_10
     cifar_wrn28_12
     
-    # CIFAR WideResNets-16 + BSConv-U
+    # CIFAR WideResNets-28 + BSConv-U
     cifar_wrn28_1_bsconvu
     cifar_wrn28_2_bsconvu
     cifar_wrn28_4_bsconvu
@@ -303,7 +313,7 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_wrn28_10_bsconvu
     cifar_wrn28_12_bsconvu
     
-    # CIFAR WideResNets-16 + BSConv-S (p=1/4)
+    # CIFAR WideResNets-28 + BSConv-S (p=1/4)
     cifar_wrn28_1_bsconvs_p1d4
     cifar_wrn28_2_bsconvs_p1d4
     cifar_wrn28_4_bsconvs_p1d4
@@ -312,7 +322,7 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_wrn28_10_bsconvs_p1d4
     cifar_wrn28_12_bsconvs_p1d4
     
-    # CIFAR WideResNets-16 + BSConv-S (p=1/8)
+    # CIFAR WideResNets-28 + BSConv-S (p=1/8)
     cifar_wrn28_1_bsconvs_p1d8
     cifar_wrn28_2_bsconvs_p1d8
     cifar_wrn28_4_bsconvs_p1d8
@@ -356,6 +366,8 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_wrn40_8_bsconvs_p1d8
     cifar_wrn40_10_bsconvs_p1d8
     cifar_wrn40_12_bsconvs_p1d8
+    
+    ################################################################################
     
     # CIFAR MobileNetsV1
     cifar_mobilenetv1_w1
@@ -405,7 +417,25 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_mobilenetv3_large_w1d2_bsconvs_p1d6
     cifar_mobilenetv3_large_w7d20_bsconvs_p1d6
     
-**More architectures will be added soon.**
+If you use BSConv-S variants, you must add the regularization loss to your classification loss:
+
+```python
+# get model
+model = bsconv.pytorch.get_model('resnet34_bsconvs_p1d4')
+
+# training loop
+...
+output = model(images)
+loss = criterion(output, target)
+
+# THIS LINE MUST BE ADDED, everything else remains unchanged
+loss += model.reg_loss(alpha=0.1)
+
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+...
+```
 
 
 BSConv as General Drop-in Replacement
@@ -472,6 +502,7 @@ When calculating the loss, the orthonormal regularization can easily be added wi
 The contribution to the global loss is determined by `alpha` (see paper for details).
 
 ```python
+# training loop
 ...
 output = model(images)
 loss = criterion(output, target)
@@ -580,6 +611,7 @@ class SimpleNet(torch.nn.Module, bsconv.pytorch.BSConvS_ModelRegLossMixin):
 Finally, you must add the regularization loss to your classification loss:
 
 ```python
+# training loop
 ...
 output = model(images)
 loss = criterion(output, target)
