@@ -29,45 +29,55 @@ Currently, available architectures are:
     # ResNets
     resnet(10|18|26|34|68|102)
     resnet(10|18|26|34|68|102)_bsconvu
-    resnet(10|18|26|34|68|102)_bsconvs_pXdY    # BSConv-S p=X/Y
+    resnet(10|18|26|34|68|102)_bsconvs_pXdY            # BSConv-S p=X/Y
 
-    # MobileNetsV1 (only support BSConv-U)
-    mobilenetv1_wXdY            # width w=X/Y
-    mobilenetv1_wXdY_bsconvu    # width w=X/Y
+    # Pre-Activation ResNets (aka ResNetsV2)
+    preresnet(10|18|26|34|68|102)
+    preresnet(10|18|26|34|68|102)_bsconvu
+    preresnet(10|18|26|34|68|102)_bsconvs_pXdY         # BSConv-S p=X/Y
+
+    # MobileNetsV1 (support BSConv-U)
+    mobilenetv1_wXdY                                   # width w=X/Y
+    mobilenetv1_wXdY_bsconvu                           # width w=X/Y
     
-    # MobileNetsV2 (only support BSConv-S with p=1/6)
-    mobilenetv2_wXdY                 # width w=X/Y
-    mobilenetv2_wXdY_bsconvs_p1d6    # width w=X/Y
+    # MobileNetsV2 (support BSConv-S with p=1/6)
+    mobilenetv2_wXdY                                   # width w=X/Y
+    mobilenetv2_wXdY_bsconvs_p1d6                      # width w=X/Y
     
-    # MobileNetsV3 (only support BSConv-S with p=1/6)
-    mobilenetv3_small_wXdY                 # width w=X/Y
-    mobilenetv3_large_wXdY                 # width w=X/Y
-    mobilenetv3_small_wXdY_bsconvs_p1d6    # width w=X/Y
-    mobilenetv3_large_wXdY_bsconvs_p1d6    # width w=X/Y
+    # MobileNetsV3 (support BSConv-S with p=1/6)
+    mobilenetv3_small_wXdY                             # width w=X/Y
+    mobilenetv3_large_wXdY                             # width w=X/Y
+    mobilenetv3_small_wXdY_bsconvs_p1d6                # width w=X/Y
+    mobilenetv3_large_wXdY_bsconvs_p1d6                # width w=X/Y
 
     # CIFAR ResNets
     cifar_resnet(20|56|110|302|602)
     cifar_resnet(20|56|110|302|602)_bsconvu
-    cifar_resnet(20|56|110|302|602)_bsconvs_pXdY    # BSConv-S p=X/Y
+    cifar_resnet(20|56|110|302|602)_bsconvs_pXdY       # BSConv-S p=X/Y
+    
+    # CIFAR Pre-Activation ResNets (aka ResNetsV2)
+    cifar_preresnet(20|56|110|302|602)
+    cifar_preresnet(20|56|110|302|602)_bsconvu
+    cifar_preresnet(20|56|110|302|602)_bsconvs_pXdY    # BSConv-S p=X/Y
     
     # CIFAR WideResNets
     cifar_wrn(16|28|40)_(1|2|3|...)
     cifar_wrn(16|28|40)_(1|2|3|...)_bsconvu
-    cifar_wrn(16|28|40)_(1|2|3|...)_bsconvs_pXdY    # BSConv-S p=X/Y
+    cifar_wrn(16|28|40)_(1|2|3|...)_bsconvs_pXdY       # BSConv-S p=X/Y
     
-    # CIFAR MobileNetsV1 (only support BSConv-U)
-    cifar_mobilenetv1_wXdY            # width w=X/Y
-    cifar_mobilenetv1_wXdY_bsconvu    # width w=X/Y
+    # CIFAR MobileNetsV1 (support BSConv-U)
+    cifar_mobilenetv1_wXdY                             # width w=X/Y
+    cifar_mobilenetv1_wXdY_bsconvu                     # width w=X/Y
     
-    # CIFAR MobileNetsV2 (only support BSConv-S with p=1/6)
-    cifar_mobilenetv2_wXdY                 # width w=X/Y
-    cifar_mobilenetv2_wXdY_bsconvs_p1d6    # width w=X/Y
+    # CIFAR MobileNetsV2 (support BSConv-S with p=1/6)
+    cifar_mobilenetv2_wXdY                             # width w=X/Y
+    cifar_mobilenetv2_wXdY_bsconvs_p1d6                # width w=X/Y
     
-    # CIFAR MobileNetsV3 (only support BSConv-S with p=1/6)
-    cifar_mobilenetv3_small_wXdY                 # width w=X/Y
-    cifar_mobilenetv3_large_wXdY                 # width w=X/Y
-    cifar_mobilenetv3_small_wXdY_bsconvs_p1d6    # width w=X/Y
-    cifar_mobilenetv3_large_wXdY_bsconvs_p1d6    # width w=X/Y
+    # CIFAR MobileNetsV3 (support BSConv-S with p=1/6)
+    cifar_mobilenetv3_small_wXdY                       # width w=X/Y
+    cifar_mobilenetv3_large_wXdY                       # width w=X/Y
+    cifar_mobilenetv3_small_wXdY_bsconvs_p1d6          # width w=X/Y
+    cifar_mobilenetv3_large_wXdY_bsconvs_p1d6          # width w=X/Y
     
 Concrete examples (i.e., architecture strings which can be passed to `bsconv.pytorch.get_model`) are:
 
@@ -102,6 +112,38 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     resnet34_bsconvs_p1d8
     resnet68_bsconvs_p1d8
     resnet102_bsconvs_p1d8
+
+    # Pre-Activation ResNets (aka ResNetsV2)
+    preresnet10
+    preresnet18
+    preresnet26
+    preresnet34
+    preresnet68
+    preresnet102
+    
+    # Pre-Activation ResNets (aka ResNetsV2) + BSConv-U
+    preresnet10_bsconvu
+    preresnet18_bsconvu
+    preresnet26_bsconvu
+    preresnet34_bsconvu
+    preresnet68_bsconvu
+    preresnet102_bsconvu
+    
+    # Pre-Activation ResNets (aka ResNetsV2) + BSConv-S (p=1/4)
+    preresnet10_bsconvs_p1d4
+    preresnet18_bsconvs_p1d4
+    preresnet26_bsconvs_p1d4
+    preresnet34_bsconvs_p1d4
+    preresnet68_bsconvs_p1d4
+    preresnet102_bsconvs_p1d4
+    
+    # Pre-Activation ResNets (aka ResNetsV2) + BSConv-S (p=1/8)
+    preresnet10_bsconvs_p1d8
+    preresnet18_bsconvs_p1d8
+    preresnet26_bsconvs_p1d8
+    preresnet34_bsconvs_p1d8
+    preresnet68_bsconvs_p1d8
+    preresnet102_bsconvs_p1d8
 
     # MobileNetsV1
     mobilenetv1_w1
@@ -178,6 +220,34 @@ Concrete examples (i.e., architecture strings which can be passed to `bsconv.pyt
     cifar_resnet110_bsconvs_p1d8
     cifar_resnet302_bsconvs_p1d8
     cifar_resnet602_bsconvs_p1d8
+    
+    # CIFAR Pre-Activation ResNets (aka ResNetsV2)
+    cifar_preresnet20
+    cifar_preresnet56
+    cifar_preresnet110
+    cifar_preresnet302
+    cifar_preresnet602
+    
+    # CIFAR Pre-Activation ResNets (aka ResNetsV2) + BSConv-U
+    cifar_preresnet20_bsconvu
+    cifar_preresnet56_bsconvu
+    cifar_preresnet110_bsconvu
+    cifar_preresnet302_bsconvu
+    cifar_preresnet602_bsconvu
+    
+    # CIFAR Pre-Activation ResNets (aka ResNetsV2) + BSConv-S (p=1/4)
+    cifar_preresnet20_bsconvs_p1d4
+    cifar_preresnet56_bsconvs_p1d4
+    cifar_preresnet110_bsconvs_p1d4
+    cifar_preresnet302_bsconvs_p1d4
+    cifar_preresnet602_bsconvs_p1d4
+    
+    # CIFAR Pre-Activation ResNets (aka ResNetsV2) + BSConv-S (p=1/8)
+    cifar_preresnet20_bsconvs_p1d8
+    cifar_preresnet56_bsconvs_p1d8
+    cifar_preresnet110_bsconvs_p1d8
+    cifar_preresnet302_bsconvs_p1d8
+    cifar_preresnet602_bsconvs_p1d8
     
     # CIFAR WideResNets-16
     cifar_wrn16_1
